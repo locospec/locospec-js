@@ -4,7 +4,7 @@ const generateRoutes = require("./generate_routes");
 const executeAction = require("./actions");
 const deepAssign = require("./helpers/deepAssign");
 
-var engine = (function () {
+const locoFactory = (function () {
   "use strict";
   const resourceModels = {};
   let locoConfig = {};
@@ -97,4 +97,4 @@ var engine = (function () {
   };
 })();
 
-module.exports = engine;
+module.exports = locoFactory;

@@ -58,9 +58,14 @@ const saveFacet = async (context) => {
       let tsvPayload = {};
       tsvPayload[resourceSpec["facet"]["tagsColumns"]] =
         JSON.stringify(tagsArray);
-      tsvPayload[resourceSpec["facet"]["tsvColumn"]] = knex.raw(
-        `array_to_tsvector(\'{${tagsString.join(",")}}\')`
-      );
+      // tsvPayload[resourceSpec["facet"]["tsvColumn"]] = knex.raw(
+      //   `array_to_tsvector(\'{${tagsString.join(",")}}\')`
+      // );
+
+      tsvPayload[resourceSpec["facet"]["tsvColumn"]] =
+        locoConfig.operator.rawQuery(
+          `array_to_tsvector(\'{${tagsString.join(",")}}\')`
+        );
 
       const operations = [];
 
@@ -71,7 +76,7 @@ const saveFacet = async (context) => {
         where: updateWhere,
       });
 
-      await locoConfig.operator(operations);
+      await locoConfig.operator.dbOps(operations);
 
       // console.log("tagsString", updateWhere, tsvPayload);
     }

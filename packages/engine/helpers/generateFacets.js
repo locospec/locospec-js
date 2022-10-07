@@ -56,7 +56,7 @@ const generateFacets = async (context) => {
           selectColumns: "*",
         });
 
-        let generatedData = await locoConfig.operator(operations);
+        let generatedData = await locoConfig.operator.dbOps(operations);
         generatedData = generatedData["data"];
         // console.log("generatedData", generatedData);
 

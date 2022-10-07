@@ -29,7 +29,7 @@ const runTransformation = async (context, valueFromSource, transformation) => {
         where: getWhere,
       });
 
-      transformedValue = await locoConfig.operator(operations);
+      transformedValue = await locoConfig.operator.dbOps(operations);
 
       transformedValue = pickKeysFromObject(
         transformedValue,
@@ -53,7 +53,7 @@ const runTransformation = async (context, valueFromSource, transformation) => {
         selectColumns: [transformation.extract],
       });
 
-      transformedValue = await locoConfig.operator(operations);
+      transformedValue = await locoConfig.operator.dbOps(operations);
 
       transformedValue = transformedValue.data.map((t) => {
         return t[transformation.extract];

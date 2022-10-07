@@ -15,7 +15,13 @@
     "nobelite:start": "turbo run nobelite#start",
     "nobelite:db:migrate": "cd apps/nobelite && ENVFILE=.env knex migrate:latest",
     "nobelite:db:rollback": "cd apps/nobelite && ENVFILE=.env knex migrate:rollback",
-    "nobelite:db:migration": "cd apps/nobelite && ENVFILE=.env knex migrate:make"
+    "nobelite:db:migration": "cd apps/nobelite && ENVFILE=.env knex migrate:make",
+    "patch:engine": "cd packages/engine && npm version patch",
+    "publish:engine": "cd packages/engine && npm publish",
+    "patch:operator-knexjs": "cd packages/operator-knexjs && npm version patch",
+    "publish:operator-knexjs": "cd packages/operator-knexjs && npm publish",
+    "patch:loco-nobe": "yarn patch:engine && yarn patch:operator-knexjs",
+    "publish:loco-nobe": "yarn publish:engine && yarn publish:operator-knexjs"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

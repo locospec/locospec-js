@@ -1,6 +1,5 @@
-const executeRoute = require("@locospec/engine");
-const locoFactory = require("@locospec/engine/factory");
-const { dbOps } = require("@locospec/operator-knexjs");
+const { executeRoute, locoFactory } = require("@locospec/engine");
+const operator = require("@locospec/operator-knexjs");
 const path = require("path");
 const Config = require("../config")();
 const responseKey = Config["responseKey"];
@@ -15,7 +14,7 @@ module.exports = (server) => {
     resolvePayloadFnPath: path.resolve(`mental/functions/resolvePayload.js`),
     resolveUserFnPath: path.resolve(`mental/functions/resolveUser.js`),
     apiPrefix: "/loco",
-    operator: dbOps,
+    operator: operator,
   });
 
   const routes = locoFactory.generateRoutes();

@@ -83,7 +83,7 @@ const fillHasManyWithPivotResources = async (context) => {
       selectColumns: "*",
     });
 
-    let relationData = await locoConfig.operator(operations);
+    let relationData = await locoConfig.operator.dbOps(operations);
     relationData = relationData["data"];
 
     // console.log("relationData", relationData);
@@ -122,7 +122,7 @@ const fillHasManyWithPivotResources = async (context) => {
         selectColumns: "*",
       });
 
-      let resourceData = await locoConfig.operator(operations);
+      let resourceData = await locoConfig.operator.dbOps(operations);
       resourceData = resourceData["data"];
       // console.log("resourceData", resourceData.length);
 
