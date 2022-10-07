@@ -1,0 +1,16 @@
+{
+  "name": "@locospec/engine",
+  "version": "0.0.1",
+  "description": "NodeJS Engine Implementation of Locospec",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rajiv Seelam",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "uuid": "^9.0.0",
+    "validate.js": "^0.13.1"
+  }
+}
