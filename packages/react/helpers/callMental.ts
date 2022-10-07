@@ -2,7 +2,7 @@ import { axiosObject } from "./axios";
 
 function callMental(resource: string, action: string, payload: any = {}) {
   return new Promise((resolve, reject) => {
-    let uri = `/data/resource/${resource}/${action}`;
+    let uri = `/loco/resource/${resource}/${action}`;
 
     // console.log("payload", payload);
 

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { callMental, getByUuid } from "./helpers/callMental";
 import resolveByDot from "./helpers/resolveByDot";
 
-const MentalSpec = (router: any) => {
+const LocoSpecUI = (router: any) => {
   const resource = router.query.resource;
 
   const [action, setAction] = useState("none");
@@ -26,7 +26,7 @@ const MentalSpec = (router: any) => {
         let resourceConfig: any = await callMental(resource, "_config");
         setResourceSpec(resourceConfig);
 
-        let endpoint = router.query?.mental;
+        let endpoint = router.query?.loco;
         // console.log("router.query", router.query, endpoint);
 
         if (endpoint !== undefined && endpoint.length > 0) {
@@ -138,4 +138,4 @@ const MentalSpec = (router: any) => {
   };
 };
 
-export default MentalSpec;
+export default LocoSpecUI;

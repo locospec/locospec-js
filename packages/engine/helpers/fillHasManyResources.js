@@ -37,6 +37,10 @@ const fillHasManyResources = async (context) => {
 
     const resourceSpec = resourceModels[columnSpec.relation.resource];
 
+    if (resourceSpec === undefined) {
+      return context;
+    }
+
     let whereClause = {};
     whereClause["op"] = "in";
     whereClause["attribute"] = columnSpec.relation.foreignKey;

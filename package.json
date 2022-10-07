@@ -11,6 +11,7 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "admin:serve": "turbo run admin#dev",
     "nobelite:serve": "turbo run nobelite#serve",
     "nobelite:start": "turbo run nobelite#start",
     "nobelite:db:migrate": "cd apps/nobelite && ENVFILE=.env knex migrate:latest",
@@ -21,7 +22,8 @@
     "patch:operator-knexjs": "cd packages/operator-knexjs && npm version patch",
     "publish:operator-knexjs": "cd packages/operator-knexjs && npm publish",
     "patch:loco-nobe": "yarn patch:engine && yarn patch:operator-knexjs",
-    "publish:loco-nobe": "yarn publish:engine && yarn publish:operator-knexjs"
+    "publish:loco-nobe": "yarn publish:engine && yarn publish:operator-knexjs",
+    "admin:start": "npx concurrently 'yarn nobelite:serve' 'yarn admin:serve'"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

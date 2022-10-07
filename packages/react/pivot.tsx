@@ -30,7 +30,7 @@ const Pivot = ({
   formInstance: any;
   primaryIdentifier: any;
 }) => {
-  let endpoint = router.query?.mental;
+  let endpoint = router.query?.loco;
   const attributeIdentifier = endpoint[2];
   const [additionalErrors, setAdditionalErrors] = useState<any>([]);
 
