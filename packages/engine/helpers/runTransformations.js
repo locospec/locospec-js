@@ -2,7 +2,7 @@ const runTransformation = require("../helpers/runTransformation");
 const prepareMutationIncludes = require("./prepareMutationIncludes");
 
 const runTransformations = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
 
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;

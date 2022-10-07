@@ -100,6 +100,7 @@ const addToConstraints = (
 
       constraints[attribute_identifier]["unique"] = {
         message: `${attribute_identifier} should be unique.`,
+        context: context,
         table: validator.table,
         where: where,
         whereNot: whereNot,
@@ -130,6 +131,7 @@ const addToConstraints = (
 
       constraints[attribute_identifier]["exists"] = {
         message: `${attribute_identifier} should exist.`,
+        context: context,
         table: validator.table,
         where: where,
         whereNot: whereNot,
@@ -147,10 +149,10 @@ const addToConstraints = (
 };
 
 const validate = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
-  const outsideValidatorFunctions = require(mentalConfig.validatorsPath);
+  const outsideValidatorFunctions = require(locoConfig.validatorsPath);
 
   const attributesWithOperations = attributes.filter((a) => {
     return a.operations !== undefined;

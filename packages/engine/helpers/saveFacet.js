@@ -3,7 +3,7 @@ const { pickKeysFromObject } = require("./utils");
 const knex = requireKnex();
 
 const saveFacet = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const resourceSpec = resourceModels[locoAction.resource];
 
   const { belongsToOneColumns, belongsToOneMappings } = locoAction;
@@ -71,7 +71,7 @@ const saveFacet = async (context) => {
         where: updateWhere,
       });
 
-      await mentalConfig.operator(operations);
+      await locoConfig.operator(operations);
 
       // console.log("tagsString", updateWhere, tsvPayload);
     }

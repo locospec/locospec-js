@@ -1,7 +1,7 @@
 const { pickKeysFromObject } = require("./utils");
 
 const getOperations = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
 
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;

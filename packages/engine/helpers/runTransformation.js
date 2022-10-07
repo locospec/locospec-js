@@ -1,7 +1,7 @@
 const { pickKeysFromObject } = require("./utils");
 
 const runTransformation = async (context, valueFromSource, transformation) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
 
   let transformedValue = valueFromSource;
 
@@ -29,7 +29,7 @@ const runTransformation = async (context, valueFromSource, transformation) => {
         where: getWhere,
       });
 
-      transformedValue = await mentalConfig.operator(operations);
+      transformedValue = await locoConfig.operator(operations);
 
       transformedValue = pickKeysFromObject(
         transformedValue,
@@ -53,7 +53,7 @@ const runTransformation = async (context, valueFromSource, transformation) => {
         selectColumns: [transformation.extract],
       });
 
-      transformedValue = await mentalConfig.operator(operations);
+      transformedValue = await locoConfig.operator(operations);
 
       transformedValue = transformedValue.data.map((t) => {
         return t[transformation.extract];

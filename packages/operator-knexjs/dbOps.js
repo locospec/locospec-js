@@ -97,6 +97,16 @@ const dbOps = async (dbOps) => {
               .first();
             break;
 
+          case "count":
+            opResult = await trx(dbOp.table)
+              .where(dbOp.where)
+              .whereNot(dbOp.whereNot)
+              .whereNull("deleted_at")
+              .count({ count: "*" })
+              .first();
+            opResult = parseInt(opResult.count);
+            break;
+
           case "select":
             // console.log("dbOp", dbOp);
 

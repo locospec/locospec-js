@@ -1,7 +1,7 @@
 const runOperations = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const { operations } = locoAction;
-  let opResult = await mentalConfig.operator(operations || []);
+  let opResult = await locoConfig.operator(operations || []);
   locoAction["opResult"] = opResult;
   context.locoAction = locoAction;
   return context;

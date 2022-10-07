@@ -2,7 +2,7 @@ const prepareRelationIncludes = require("./prepareRelationIncludes");
 const executeActionInternally = require("../executeActionInternally");
 
 const fillHasManyResources = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const { hasManyColumns, hasManyMappings } = locoAction;
   let includeRelations = prepareRelationIncludes(
     locoAction,

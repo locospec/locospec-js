@@ -1,5 +1,5 @@
 var validate = require("validate.js");
-const knex = requireKnex();
+const runOperations = require("./runOperations");
 
 validate.validators.outside_function = function (
   value,
@@ -37,15 +37,29 @@ validate.validators.exists = function (
   return new validate.Promise(async function (resolve, reject) {
     try {
       let count = 0;
+      const context = { ...options.context };
+      const { locoAction } = context;
+
+      let operations = [];
 
       try {
-        let rows = await knex(options.table)
-          .where(options.where)
-          .whereNot(options.whereNot)
-          .whereNull("deleted_at")
-          .count({ count: "*" })
-          .first();
-        count = parseInt(rows.count);
+        operations.push({
+          resourceSpec: {
+            meta: {
+              table: options.table,
+            },
+          },
+          operation: "count",
+          where: options.where,
+          whereNot: options.whereNot,
+        });
+
+        locoAction["operations"] = operations;
+        context.locoAction = locoAction;
+
+        let rows = await runOperations(context);
+
+        count = rows.locoAction["opResult"];
       } catch (error) {
         throw error;
       }
@@ -71,16 +85,29 @@ validate.validators.unique = function (
 ) {
   return new validate.Promise(async function (resolve, reject) {
     try {
+      const context = { ...options.context };
+      const { locoAction } = context;
       let count = 0;
+      let operations = [];
 
       try {
-        let rows = await knex(options.table)
-          .where(options.where)
-          .whereNot(options.whereNot)
-          .whereNull("deleted_at")
-          .count({ count: "*" })
-          .first();
-        count = parseInt(rows.count);
+        operations.push({
+          resourceSpec: {
+            meta: {
+              table: options.table,
+            },
+          },
+          operation: "count",
+          where: options.where,
+          whereNot: options.whereNot,
+        });
+
+        locoAction["operations"] = operations;
+        context.locoAction = locoAction;
+
+        let rows = await runOperations(context);
+
+        count = rows.locoAction["opResult"];
       } catch (error) {
         throw error;
       }

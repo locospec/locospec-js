@@ -17,7 +17,7 @@ const generateAttribute = async (
   generator,
   outsideGeneratorFunctions
 ) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   let payload = locoAction.payload;
   const resourceSpec = resourceModels[locoAction.resource];
 
@@ -51,10 +51,11 @@ const generateAttribute = async (
 };
 
 const generate = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
+
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
-  const outsideGeneratorFunctions = require(mentalConfig.generatorsPath);
+  const outsideGeneratorFunctions = require(locoConfig.generatorsPath);
   let payload = locoAction.payload;
   let action = locoAction.action;
 

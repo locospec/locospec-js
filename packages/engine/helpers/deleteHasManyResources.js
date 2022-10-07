@@ -1,7 +1,7 @@
 const executeActionInternally = require("../executeActionInternally");
 
 const deleteHasManyResources = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const { hasManyColumns, hasManyMappings } = locoAction;
 
   let currentData =

@@ -1,8 +1,8 @@
-const routes = ({ resourceModels }, mentalConfig) => {
+const routes = ({ resourceModels }, locoConfig) => {
   const resources = Object.values(resourceModels);
   const apiEndpoints = [];
   const mentalApiPrefix =
-    mentalConfig.apiPrefix === undefined ? "/mental" : mentalConfig.apiPrefix;
+    locoConfig.apiPrefix === undefined ? "/mental" : locoConfig.apiPrefix;
 
   let crudPaths = [
     {

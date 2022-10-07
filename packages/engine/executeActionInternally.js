@@ -1,10 +1,10 @@
 const executeActionInternally = async (mentalRoute, payload) => {
   const executeAction = require("./actions");
-  const mentalFactory = require("./factory");
+  const locoFactory = require("./factory");
 
   let result = await executeAction({
-    resourceModels: mentalFactory.getResourceModels(),
-    mentalConfig: mentalFactory.getConfig(),
+    resourceModels: locoFactory.getResourceModels(),
+    locoConfig: locoFactory.getConfig(),
     locoAction: {
       resource: mentalRoute.resource,
       action: mentalRoute.action,

@@ -1,7 +1,7 @@
 const prepareRelationIncludes = require("./prepareRelationIncludes");
 
 const fillHasManyWithPivotResources = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const { hasManyViaPivotColumns, hasManyViaPivotMappings } = locoAction;
   let includeRelations = prepareRelationIncludes(
     locoAction,
@@ -83,7 +83,7 @@ const fillHasManyWithPivotResources = async (context) => {
       selectColumns: "*",
     });
 
-    let relationData = await mentalConfig.operator(operations);
+    let relationData = await locoConfig.operator(operations);
     relationData = relationData["data"];
 
     // console.log("relationData", relationData);
@@ -122,7 +122,7 @@ const fillHasManyWithPivotResources = async (context) => {
         selectColumns: "*",
       });
 
-      let resourceData = await mentalConfig.operator(operations);
+      let resourceData = await locoConfig.operator(operations);
       resourceData = resourceData["data"];
       // console.log("resourceData", resourceData.length);
 

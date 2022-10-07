@@ -7,18 +7,18 @@ const deepAssign = require("./helpers/deepAssign");
 var engine = (function () {
   "use strict";
   const resourceModels = {};
-  let mentalConfig = {};
+  let locoConfig = {};
   let resolvePayload = undefined;
   let resolveUser = undefined;
   return {
     getConfig: () => {
-      return mentalConfig;
+      return locoConfig;
     },
     getResourceModels: () => {
       return resourceModels;
     },
     generateRoutes: () => {
-      return generateRoutes({ resourceModels }, mentalConfig);
+      return generateRoutes({ resourceModels }, locoConfig);
     },
     getResolveUserFn: () => {
       return resolveUser;
@@ -27,14 +27,14 @@ var engine = (function () {
       return resolvePayload;
     },
     executeRoute: async (mentalRoute, frameworkData) => {
-      const resolvePayload = require(mentalConfig.resolvePayloadFnPath);
-      const resolveUser = require(mentalConfig.resolveUserFnPath);
+      const resolvePayload = require(locoConfig.resolvePayloadFnPath);
+      const resolveUser = require(locoConfig.resolveUserFnPath);
       const permissions = await resolveUser(mentalRoute, frameworkData);
       const payload = await resolvePayload(mentalRoute, frameworkData);
 
       let result = await executeAction({
         resourceModels: resourceModels,
-        mentalConfig: mentalConfig,
+        locoConfig: locoConfig,
         locoAction: {
           resource: mentalRoute.resource,
           action: mentalRoute.action,
@@ -46,10 +46,10 @@ var engine = (function () {
     },
     init: (config) => {
       console.log("init .......");
-      mentalConfig = config;
+      locoConfig = config;
 
-      resolvePayload = require(mentalConfig.resolvePayloadFnPath);
-      resolveUser = require(mentalConfig.resolveUserFnPath);
+      resolvePayload = require(locoConfig.resolvePayloadFnPath);
+      resolveUser = require(locoConfig.resolveUserFnPath);
 
       let resources = fs.readdirSync(config.resourcesPath);
       let mixins = fs.readdirSync(config.mixinsPath);

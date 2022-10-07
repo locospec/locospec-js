@@ -1,7 +1,7 @@
 const runTransformation = require("../helpers/runTransformation");
 
 const generateFacets = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
 
   if (context.locoAction["opResult"]["generated_facets"] !== undefined) {
     const facets = {};
@@ -56,7 +56,7 @@ const generateFacets = async (context) => {
           selectColumns: "*",
         });
 
-        let generatedData = await mentalConfig.operator(operations);
+        let generatedData = await locoConfig.operator(operations);
         generatedData = generatedData["data"];
         // console.log("generatedData", generatedData);
 

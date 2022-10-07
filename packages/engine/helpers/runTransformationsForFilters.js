@@ -1,7 +1,7 @@
 const runTransformation = require("./runTransformation");
 
 const runTransformationsForFilters = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
 
   const resourceSpec = resourceModels[locoAction.resource];
 

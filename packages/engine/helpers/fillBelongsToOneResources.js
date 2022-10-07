@@ -2,7 +2,7 @@ const executeActionInternally = require("../executeActionInternally");
 const prepareRelationIncludes = require("./prepareRelationIncludes");
 
 const fillBelongsToOneResources = async (context) => {
-  const { locoAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, locoConfig } = context;
   const { belongsToOneColumns, belongsToOneMappings } = locoAction;
   let currentData =
     context.locoAction["opResult"]["data"] === undefined

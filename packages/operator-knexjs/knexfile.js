@@ -1,6 +1,6 @@
 module.exports = {
   client: process.env.DB_DIALECT || "pg",
-  debug: process.env.DEBUG || false,
+  debug: false,
   connection: {
     host: process.env.DB_HOST || "localhost",
     port: process.env.DB_PORT || 5432,
