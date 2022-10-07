@@ -1,6 +1,6 @@
 {
   "name": "@locospec/operator-knexjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "KnexJS Operator Implementation of Locospec",
   "main": "index.js",
   "scripts": {
