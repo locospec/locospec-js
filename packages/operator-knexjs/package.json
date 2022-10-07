@@ -1,0 +1,18 @@
+{
+  "name": "@locospec/operator-knexjs",
+  "version": "0.0.1",
+  "description": "KnexJS Operator Implementation of Locospec",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rajiv Seelam",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^2.3.0",
+    "pg": "^8.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
