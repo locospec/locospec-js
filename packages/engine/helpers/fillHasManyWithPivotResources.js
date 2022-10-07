@@ -1,10 +1,10 @@
 const prepareRelationIncludes = require("./prepareRelationIncludes");
 
 const fillHasManyWithPivotResources = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  const { hasManyViaPivotColumns, hasManyViaPivotMappings } = mentalAction;
+  const { locoAction, resourceModels, mentalConfig } = context;
+  const { hasManyViaPivotColumns, hasManyViaPivotMappings } = locoAction;
   let includeRelations = prepareRelationIncludes(
-    mentalAction,
+    locoAction,
     hasManyViaPivotColumns,
     hasManyViaPivotMappings
   );
@@ -12,9 +12,9 @@ const fillHasManyWithPivotResources = async (context) => {
   // Get the current data
 
   let currentData =
-    context.mentalAction["opResult"]["data"] === undefined
-      ? [context.mentalAction["opResult"]]
-      : context.mentalAction["opResult"]["data"];
+    context.locoAction["opResult"]["data"] === undefined
+      ? [context.locoAction["opResult"]]
+      : context.locoAction["opResult"]["data"];
 
   // console.log("hasManyViaPivotColumns - includeRelations", includeRelations);
 

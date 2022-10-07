@@ -8,9 +8,9 @@ const addToConstraints = (
   context,
   outsideValidatorFunctions
 ) => {
-  const { mentalAction } = context;
-  let payload = mentalAction.payload;
-  let action = mentalAction.action;
+  const { locoAction } = context;
+  let payload = locoAction.payload;
+  let action = locoAction.action;
   let attribute_identifier = attribute.relation
     ? attribute.relation.resolveTo
     : attribute.identifier;
@@ -72,7 +72,7 @@ const addToConstraints = (
 
       // if (action === "update") {
       //   validator.excludeAttributes = [
-      //     ...mentalAction.primaryColumns,
+      //     ...locoAction.primaryColumns,
       //     ...validator.excludeAttributes,
       //   ];
 
@@ -147,8 +147,8 @@ const addToConstraints = (
 };
 
 const validate = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const { locoAction, resourceModels, mentalConfig } = context;
+  const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
   const outsideValidatorFunctions = require(mentalConfig.validatorsPath);
 
@@ -156,8 +156,8 @@ const validate = async (context) => {
     return a.operations !== undefined;
   });
 
-  let payload = mentalAction.payload;
-  let action = mentalAction.action;
+  let payload = locoAction.payload;
+  let action = locoAction.action;
   let forIndex = 0;
   let constraints = {};
 
@@ -211,7 +211,7 @@ const validate = async (context) => {
     throw error;
   }
 
-  context.mentalAction = mentalAction;
+  context.locoAction = locoAction;
 
   return context;
 };

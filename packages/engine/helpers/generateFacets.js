@@ -1,14 +1,14 @@
 const runTransformation = require("../helpers/runTransformation");
 
 const generateFacets = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
-  if (context.mentalAction["opResult"]["generated_facets"] !== undefined) {
+  if (context.locoAction["opResult"]["generated_facets"] !== undefined) {
     const facets = {};
 
-    const resourceSpec = resourceModels[mentalAction.resource];
+    const resourceSpec = resourceModels[locoAction.resource];
     const attributes = resourceSpec.attributes;
-    let generatedFacets = context.mentalAction["opResult"]["generated_facets"];
+    let generatedFacets = context.locoAction["opResult"]["generated_facets"];
 
     let facetAttributes = resourceSpec.attributes.filter((c) => {
       return c.facet;
@@ -69,8 +69,8 @@ const generateFacets = async (context) => {
       }
     }
 
-    delete context.mentalAction["opResult"]["generated_facets"];
-    context.mentalAction["opResult"]["facets"] = facets;
+    delete context.locoAction["opResult"]["generated_facets"];
+    context.locoAction["opResult"]["facets"] = facets;
   }
 
   return context;

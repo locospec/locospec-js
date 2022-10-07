@@ -35,7 +35,7 @@ var engine = (function () {
       let result = await executeAction({
         resourceModels: resourceModels,
         mentalConfig: mentalConfig,
-        mentalAction: {
+        locoAction: {
           resource: mentalRoute.resource,
           action: mentalRoute.action,
           permissions,

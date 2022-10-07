@@ -3,7 +3,7 @@ function capitalizeFirstLetter(string) {
 }
 
 const enhanceWithHooks = async (context, actionSequence) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
   const requiredHooks = require(mentalConfig.hooksPath);
   const lifeCycles = ["before", "after"];
   const methods = ["prepare", "authorize", "validate", "handle", "respond"];
@@ -14,8 +14,8 @@ const enhanceWithHooks = async (context, actionSequence) => {
     lifeCycles.forEach((lifeCycle) => {
       const hookName = `${lifeCycle}${capitalizeFirstLetter(
         method
-      )}${capitalizeFirstLetter(mentalAction.action)}${capitalizeFirstLetter(
-        mentalAction.resource
+      )}${capitalizeFirstLetter(locoAction.action)}${capitalizeFirstLetter(
+        locoAction.resource
       )}`;
 
       if (requiredHooks[hookName]) {

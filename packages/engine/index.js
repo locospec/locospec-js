@@ -11,7 +11,7 @@ const executeRoute = async (mentalRoute, frameworkData) => {
   let result = await executeAction({
     resourceModels: mentalFactory.getResourceModels(),
     mentalConfig: mentalFactory.getConfig(),
-    mentalAction: {
+    locoAction: {
       resource: mentalRoute.resource,
       action: mentalRoute.action,
       permissions,

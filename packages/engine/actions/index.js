@@ -5,9 +5,9 @@ const deleteAction = require("./delete");
 const configAction = require("./config");
 
 const executeAction = async (context) => {
-  const { mentalAction } = context;
+  const { locoAction } = context;
 
-  // console.log("executeAction", mentalAction);
+  // console.log("executeAction", locoAction);
 
   // const customFunctions = engine.getCustomFunctions();
   // console.log("en", customFunctions);
@@ -16,34 +16,34 @@ const executeAction = async (context) => {
   //   { resource, action, permissions, payload },
   // ]);
 
-  if (mentalAction.action === "create") {
+  if (locoAction.action === "create") {
     return await createAction(context);
   }
 
-  if (mentalAction.action === "update") {
+  if (locoAction.action === "update") {
     return await updateAction(context);
   }
 
-  if (mentalAction.action === "patch") {
+  if (locoAction.action === "patch") {
     return await updateAction(context);
   }
 
-  if (mentalAction.action === "read") {
+  if (locoAction.action === "read") {
     return await readAction(context);
   }
 
-  if (mentalAction.action === "delete") {
+  if (locoAction.action === "delete") {
     return await deleteAction(context);
   }
 
-  if (mentalAction.action === "crud_config") {
+  if (locoAction.action === "crud_config") {
     return await configAction(context);
     const { resourceModels } = context;
-    const resourceSpec = resourceModels[mentalAction.resource];
+    const resourceSpec = resourceModels[locoAction.resource];
     return { respondResult: resourceSpec };
   }
 
-  return { respondResult: mentalAction };
+  return { respondResult: locoAction };
 };
 
 module.exports = executeAction;

@@ -5,7 +5,7 @@ const executeActionInternally = async (mentalRoute, payload) => {
   let result = await executeAction({
     resourceModels: mentalFactory.getResourceModels(),
     mentalConfig: mentalFactory.getConfig(),
-    mentalAction: {
+    locoAction: {
       resource: mentalRoute.resource,
       action: mentalRoute.action,
       permissions: "*",

@@ -2,17 +2,17 @@ const runTransformation = require("../helpers/runTransformation");
 const prepareMutationIncludes = require("./prepareMutationIncludes");
 
 const runTransformations = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
   let currentData =
-    context.mentalAction["opResult"]["data"] === undefined
-      ? [context.mentalAction["opResult"]]
-      : context.mentalAction["opResult"]["data"];
+    context.locoAction["opResult"]["data"] === undefined
+      ? [context.locoAction["opResult"]]
+      : context.locoAction["opResult"]["data"];
   let newOpResult = [];
 
-  let includeMutations = prepareMutationIncludes(mentalAction, attributes);
+  let includeMutations = prepareMutationIncludes(locoAction, attributes);
 
   let forIndex = 0;
 
@@ -54,15 +54,15 @@ const runTransformations = async (context) => {
     newOpResult.push(transformed);
   }
 
-  if (context.mentalAction["opResult"]["data"] === undefined) {
-    context.mentalAction["opResult"] = newOpResult[0];
+  if (context.locoAction["opResult"]["data"] === undefined) {
+    context.locoAction["opResult"] = newOpResult[0];
   } else {
-    context.mentalAction["opResult"]["data"] = newOpResult;
+    context.locoAction["opResult"]["data"] = newOpResult;
   }
 
   return context;
 
-  //   console.log("runTransformations", context.mentalAction["opResult"]);
+  //   console.log("runTransformations", context.locoAction["opResult"]);
   return context;
 };
 

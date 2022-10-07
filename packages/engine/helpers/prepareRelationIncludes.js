@@ -1,16 +1,16 @@
 const prepareRelationIncludes = (
-  mentalAction,
+  locoAction,
   relationColumns,
   relationMappings
 ) => {
   let includes = [];
 
-  if (mentalAction.apiConfig.includeRelations !== undefined) {
-    if (Array.isArray(mentalAction.apiConfig.includeRelations)) {
-      return mentalAction.apiConfig.includeRelations;
+  if (locoAction.apiConfig.includeRelations !== undefined) {
+    if (Array.isArray(locoAction.apiConfig.includeRelations)) {
+      return locoAction.apiConfig.includeRelations;
     }
 
-    if (mentalAction.apiConfig.includeRelations === "*") {
+    if (locoAction.apiConfig.includeRelations === "*") {
       for (let index = 0; index < relationColumns.length; index++) {
         const column = relationColumns[index];
         const columnSpec = relationMappings[column];

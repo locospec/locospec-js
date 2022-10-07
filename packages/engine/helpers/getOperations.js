@@ -1,15 +1,15 @@
 const { pickKeysFromObject } = require("./utils");
 
 const getOperations = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
 
   const operations = [];
-  let payload = mentalAction.payload;
-  let hasManyPayload = mentalAction.hasManyPayload;
-  let action = mentalAction.action;
+  let payload = locoAction.payload;
+  let hasManyPayload = locoAction.hasManyPayload;
+  let action = locoAction.action;
 
   if (action === "create") {
     // console.log("payload", payload);
@@ -20,7 +20,7 @@ const getOperations = async (context) => {
       payload: payload,
     });
 
-    let getWhere = pickKeysFromObject(payload, mentalAction.primaryColumns);
+    let getWhere = pickKeysFromObject(payload, locoAction.primaryColumns);
 
     operations.push({
       resourceSpec: resourceSpec,
@@ -30,9 +30,9 @@ const getOperations = async (context) => {
   }
 
   if (action === "delete") {
-    let deleteWhere = pickKeysFromObject(payload, mentalAction.primaryColumns);
+    let deleteWhere = pickKeysFromObject(payload, locoAction.primaryColumns);
 
-    let filterBy = mentalAction.payload.filterBy || [];
+    let filterBy = locoAction.payload.filterBy || [];
 
     let filters = filterBy
       .filter((f) => {
@@ -66,7 +66,7 @@ const getOperations = async (context) => {
   }
 
   if (action === "update" || action === "patch") {
-    let updateWhere = pickKeysFromObject(payload, mentalAction.primaryColumns);
+    let updateWhere = pickKeysFromObject(payload, locoAction.primaryColumns);
 
     operations.push({
       resourceSpec: resourceSpec,
@@ -78,11 +78,11 @@ const getOperations = async (context) => {
     // We have to run an insert query insert for has many via pivot relationships
 
     // console.log(
-    //   "mentalAction.hasManyViaPivotColumns",
-    //   mentalAction.hasManyViaPivotColumns
+    //   "locoAction.hasManyViaPivotColumns",
+    //   locoAction.hasManyViaPivotColumns
     // );
 
-    const hasManyViaPivotColumns = mentalAction.hasManyViaPivotColumns;
+    const hasManyViaPivotColumns = locoAction.hasManyViaPivotColumns;
 
     for (let index = 0; index < hasManyViaPivotColumns.length; index++) {
       const hasManyViaPivotColumn = hasManyViaPivotColumns[index];
@@ -135,14 +135,14 @@ const getOperations = async (context) => {
   if (action === "read") {
     // console.log("resourceSpec", resourceSpec.sortBy);
 
-    let limitBy = mentalAction.payload.limitBy || { page: 1, per_page: 10 };
-    let filterBy = mentalAction.payload.filterBy || [];
-    let sortBy = mentalAction.payload.sortBy || resourceSpec.sortBy || [];
+    let limitBy = locoAction.payload.limitBy || { page: 1, per_page: 10 };
+    let filterBy = locoAction.payload.filterBy || [];
+    let sortBy = locoAction.payload.sortBy || resourceSpec.sortBy || [];
     const table = resourceSpec.meta.table;
 
     const selectColumns = [
-      ...mentalAction.directColumns,
-      ...mentalAction.belongsToOneColumns,
+      ...locoAction.directColumns,
+      ...locoAction.belongsToOneColumns,
     ].map((m) => `${table}.${m}`);
 
     // console.log("selectColumns", selectColumns);
@@ -159,7 +159,7 @@ const getOperations = async (context) => {
         };
       });
 
-    filters = [...filters, ...mentalAction.filters];
+    filters = [...filters, ...locoAction.filters];
 
     sortBy = sortBy.map((s) => {
       return { column: s.attribute, order: s.order, nulls: "last" };
@@ -173,13 +173,13 @@ const getOperations = async (context) => {
       limit: limitBy.per_page,
       offset: (limitBy.page - 1) * limitBy.per_page,
       sortBy,
-      includeFacets: mentalAction.apiConfig.includeFacets || false,
+      includeFacets: locoAction.apiConfig.includeFacets || false,
     });
   }
 
-  mentalAction["operations"] = operations;
+  locoAction["operations"] = operations;
 
-  context.mentalAction = mentalAction;
+  context.locoAction = locoAction;
 
   return context;
 };

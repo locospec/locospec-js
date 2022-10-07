@@ -5,6 +5,12 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "nobelite#serve": {
+      "cache": false
+    },
+    "nobelite#start": {
+      "cache": false
+    },
     "lint": {
       "outputs": []
     },

@@ -1,11 +1,11 @@
 const authorize = (context) => {
-  const { mentalAction } = context;
+  const { locoAction } = context;
 
-  const requiredBasicPermission = `${mentalAction.action}_${mentalAction.resource}`;
+  const requiredBasicPermission = `${locoAction.action}_${locoAction.resource}`;
 
   if (
-    mentalAction.permissions !== "*" &&
-    !mentalAction.permissions.includes(requiredBasicPermission)
+    locoAction.permissions !== "*" &&
+    !locoAction.permissions.includes(requiredBasicPermission)
   ) {
     throw {
       statusCode: 403,

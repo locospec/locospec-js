@@ -3,7 +3,7 @@ const enhanceWithHooks = require("../helpers/enhanceWithHooks");
 const cleanPayload = require("../helpers/cleanPayload");
 
 module.exports = async (context) => {
-  const { mentalAction, resourceModels } = context;
+  const { locoAction, resourceModels } = context;
 
   const sequence = await enhanceWithHooks(context, {
     prepare: [cleanPayload],
@@ -17,9 +17,9 @@ module.exports = async (context) => {
 
   let columnsData = {};
 
-  let resourceSpec = resourceModels[mentalAction.resource];
-  columnsData["relations"] = mentalAction["relationColumns"];
-  columnsData["mutations"] = mentalAction["mutationColumns"];
+  let resourceSpec = resourceModels[locoAction.resource];
+  columnsData["relations"] = locoAction["relationColumns"];
+  columnsData["mutations"] = locoAction["mutationColumns"];
 
   return { respondResult: { ...columnsData, ...resourceSpec } };
 };

@@ -3,14 +3,14 @@ const { pickKeysFromObject } = require("./utils");
 const knex = requireKnex();
 
 const saveFacet = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const { locoAction, resourceModels, mentalConfig } = context;
+  const resourceSpec = resourceModels[locoAction.resource];
 
-  const { belongsToOneColumns, belongsToOneMappings } = mentalAction;
+  const { belongsToOneColumns, belongsToOneMappings } = locoAction;
   let currentData =
-    context.mentalAction["opResult"]["data"] === undefined
-      ? [context.mentalAction["opResult"]]
-      : context.mentalAction["opResult"]["data"];
+    context.locoAction["opResult"]["data"] === undefined
+      ? [context.locoAction["opResult"]]
+      : context.locoAction["opResult"]["data"];
 
   if (
     resourceSpec["facet"] !== undefined &&
@@ -52,7 +52,7 @@ const saveFacet = async (context) => {
 
       let updateWhere = pickKeysFromObject(
         currentDataItem,
-        mentalAction.primaryColumns
+        locoAction.primaryColumns
       );
 
       let tsvPayload = {};

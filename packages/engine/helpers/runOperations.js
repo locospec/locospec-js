@@ -1,9 +1,9 @@
 const runOperations = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  const { operations } = mentalAction;
+  const { locoAction, resourceModels, mentalConfig } = context;
+  const { operations } = locoAction;
   let opResult = await mentalConfig.operator(operations || []);
-  mentalAction["opResult"] = opResult;
-  context.mentalAction = mentalAction;
+  locoAction["opResult"] = opResult;
+  context.locoAction = locoAction;
   return context;
 };
 

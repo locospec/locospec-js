@@ -1,11 +1,11 @@
 const runTransformation = require("./runTransformation");
 
 const runTransformationsForFilters = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const resourceSpec = resourceModels[locoAction.resource];
 
-  let filterBy = mentalAction.payload.filterBy || [];
+  let filterBy = locoAction.payload.filterBy || [];
   let newFilterBy = {};
   let filters = [];
 
@@ -55,8 +55,8 @@ const runTransformationsForFilters = async (context) => {
     }
   }
 
-  mentalAction["filters"] = filters;
-  context.mentalAction = mentalAction;
+  locoAction["filters"] = filters;
+  context.locoAction = locoAction;
 
   return context;
 };

@@ -1,7 +1,7 @@
 const { pickKeysFromObject } = require("./utils");
 
 const runTransformation = async (context, valueFromSource, transformation) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
   let transformedValue = valueFromSource;
 

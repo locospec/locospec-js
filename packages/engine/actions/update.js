@@ -26,5 +26,5 @@ module.exports = async (context) => {
 
   context = await executeSequence(context, sequence);
 
-  return { respondResult: context.mentalAction["opResult"] };
+  return { respondResult: context.locoAction["opResult"] };
 };

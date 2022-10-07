@@ -1,13 +1,13 @@
 const { pickKeysFromObject } = require("./utils");
 
 const cleanPayload = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
+  const { locoAction, resourceModels, mentalConfig } = context;
 
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
 
-  let payload = mentalAction.payload;
-  let action = mentalAction.action;
+  let payload = locoAction.payload;
+  let action = locoAction.action;
   let relationColumns = {
     belongs_to_one: [],
     has_one: [],
@@ -142,16 +142,16 @@ const cleanPayload = async (context) => {
 
   // let otherKeys = [];
 
-  // if (mentalAction.action === "read") {
+  // if (locoAction.action === "read") {
   //   otherKeys = ["limitBy", "sortBy", "filterBy"];
   // }
 
   otherKeys = ["limitBy", "sortBy", "filterBy"];
 
   if (payload.apiConfig !== undefined) {
-    mentalAction["apiConfig"] = payload.apiConfig;
+    locoAction["apiConfig"] = payload.apiConfig;
   } else {
-    mentalAction["apiConfig"] = {};
+    locoAction["apiConfig"] = {};
   }
 
   // console.log("includes -----", includes);
@@ -168,22 +168,22 @@ const cleanPayload = async (context) => {
     ...otherKeys,
   ]);
 
-  mentalAction["payload"] = payload;
-  mentalAction["hasManyPayload"] = hasManyPayload;
-  mentalAction["directColumns"] = directColumns;
-  mentalAction["belongsToOneColumns"] = belongsToOneColumns;
-  mentalAction["belongsToOneMappings"] = belongsToOneMappings;
-  mentalAction["hasOneColumns"] = hasOneColumns;
-  mentalAction["hasOneMappings"] = hasOneMappings;
-  mentalAction["hasManyColumns"] = hasManyColumns;
-  mentalAction["hasManyMappings"] = hasManyMappings;
-  mentalAction["hasManyViaPivotColumns"] = hasManyViaPivotColumns;
-  mentalAction["hasManyViaPivotMappings"] = hasManyViaPivotMappings;
-  mentalAction["mutationColumns"] = mutationColumns;
-  mentalAction["relationColumns"] = relationColumns;
+  locoAction["payload"] = payload;
+  locoAction["hasManyPayload"] = hasManyPayload;
+  locoAction["directColumns"] = directColumns;
+  locoAction["belongsToOneColumns"] = belongsToOneColumns;
+  locoAction["belongsToOneMappings"] = belongsToOneMappings;
+  locoAction["hasOneColumns"] = hasOneColumns;
+  locoAction["hasOneMappings"] = hasOneMappings;
+  locoAction["hasManyColumns"] = hasManyColumns;
+  locoAction["hasManyMappings"] = hasManyMappings;
+  locoAction["hasManyViaPivotColumns"] = hasManyViaPivotColumns;
+  locoAction["hasManyViaPivotMappings"] = hasManyViaPivotMappings;
+  locoAction["mutationColumns"] = mutationColumns;
+  locoAction["relationColumns"] = relationColumns;
 
-  mentalAction["primaryColumns"] = resourceSpec.primary;
-  context.mentalAction = mentalAction;
+  locoAction["primaryColumns"] = resourceSpec.primary;
+  context.locoAction = locoAction;
 
   return context;
 };

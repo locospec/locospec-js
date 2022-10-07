@@ -17,9 +17,9 @@ const generateAttribute = async (
   generator,
   outsideGeneratorFunctions
 ) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  let payload = mentalAction.payload;
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const { locoAction, resourceModels, mentalConfig } = context;
+  let payload = locoAction.payload;
+  const resourceSpec = resourceModels[locoAction.resource];
 
   switch (generator.type) {
     case "uuid":
@@ -51,12 +51,12 @@ const generateAttribute = async (
 };
 
 const generate = async (context) => {
-  const { mentalAction, resourceModels, mentalConfig } = context;
-  const resourceSpec = resourceModels[mentalAction.resource];
+  const { locoAction, resourceModels, mentalConfig } = context;
+  const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
   const outsideGeneratorFunctions = require(mentalConfig.generatorsPath);
-  let payload = mentalAction.payload;
-  let action = mentalAction.action;
+  let payload = locoAction.payload;
+  let action = locoAction.action;
 
   const attributesWithOperations = attributes.filter((a) => {
     return a.operations !== undefined;
@@ -121,8 +121,8 @@ const generate = async (context) => {
     }
   }
 
-  mentalAction.payload = payload;
-  context.mentalAction = mentalAction;
+  locoAction.payload = payload;
+  context.locoAction = locoAction;
   return context;
 };
 
