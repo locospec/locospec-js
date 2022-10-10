@@ -7,7 +7,7 @@ import {
   PickerSelectSimple,
   ToggleBase,
 } from "@reusejs/react";
-import { callMental, getByUuid } from "./helpers/callMental";
+import { callLoco, getByUuid } from "./helpers/callLoco";
 import resolveByDot from "./helpers/resolveByDot";
 import { JsonForms } from "@jsonforms/react";
 import { materialCells } from "@jsonforms/material-renderers";
@@ -31,6 +31,7 @@ function CreateOrEditForm({
   action,
   router,
   primaryIdentifier,
+  routePrefix,
 }: {
   resourceSpec: any;
   resourceData: any;
@@ -38,6 +39,7 @@ function CreateOrEditForm({
   action: any;
   router: any;
   primaryIdentifier: any;
+  routePrefix: any;
 }) {
   console.log("router", router);
 
@@ -78,7 +80,7 @@ function CreateOrEditForm({
 
       e.preventDefault();
       formInstance.startProcessing();
-      await callMental(resource, `_${action}`, payload);
+      await callLoco(routePrefix, resource, `_${action}`, payload);
       formInstance.finishProcessing();
       router.back();
       // if (action === "update") {
@@ -176,7 +178,10 @@ function CreateOrEditForm({
                   scope: `#/properties/${attribute.resolved_identifier}`,
                   options: {
                     reusejs: uiComponent,
-                    mental: attribute,
+                    attributeSpec: attribute,
+                    loco: {
+                      prefix: routePrefix,
+                    },
                   },
                 });
                 formInstance.startProcessing();
@@ -195,7 +200,10 @@ function CreateOrEditForm({
                   scope: `#/properties/${attribute.resolved_identifier}`,
                   options: {
                     reusejs: uiComponent,
-                    mental: attribute,
+                    attributeSpec: attribute,
+                    loco: {
+                      prefix: routePrefix,
+                    },
                   },
                 });
 
@@ -266,8 +274,9 @@ function CreateOrEditForm({
                 scope: `#/properties/${attribute.resolved_identifier}`,
                 options: {
                   reusejs: uiComponent,
-                  mental: {
+                  loco: {
                     resource: attribute.relation.resource,
+                    prefix: routePrefix,
                   },
                 },
               });
@@ -275,6 +284,7 @@ function CreateOrEditForm({
               if (action === "update") {
                 console.log("resourceData", resourceData);
                 let response: any = await getByUuid(
+                  routePrefix,
                   attribute.relation.resource,
                   resourceData[attribute.resolved_identifier]
                 );
@@ -308,7 +318,7 @@ function CreateOrEditForm({
                 scope: `#/properties/${attribute.resolved_identifier}`,
                 options: {
                   reusejs: uiComponent,
-                  mental: attribute,
+                  attributeSpec: attribute,
                 },
               });
 

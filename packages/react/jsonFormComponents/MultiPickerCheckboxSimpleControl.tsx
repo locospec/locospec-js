@@ -1,7 +1,7 @@
 import { useJsonForms, withJsonFormsControlProps } from "@jsonforms/react";
 import { PickerCheckboxSimple } from "@reusejs/react";
 import * as React from "react";
-import { callMental } from "../helpers/callMental";
+import { callLoco } from "../helpers/callLoco";
 
 const ErrorText = (props: any) => (
   <div className="mt-2 text-xs text-red-500 lowercase">
@@ -31,8 +31,8 @@ const MultiPickerCheckboxSimpleControl = (props: any) => {
 
   // console.log("props.data", props.data);
 
-  const mentalSpec = props.uischema.options.mental;
-  //   console.log("MultiPickerCheckboxSimpleControl", props.path, mentalSpec);
+  const locoSpec = props.uischema.options.loco;
+  //   console.log("MultiPickerCheckboxSimpleControl", props.path, locoSpec);
 
   return (
     <>
@@ -51,12 +51,17 @@ const MultiPickerCheckboxSimpleControl = (props: any) => {
         multiple={true}
         defaultSelected={value}
         dataSource={async (query: any) => {
-          let response: any = await callMental(mentalSpec.resource, `_read`, {
-            limitBy: {
-              per_page: 999,
-              page: 1,
-            },
-          });
+          let response: any = await callLoco(
+            locoSpec.prefix,
+            locoSpec.resource,
+            `_read`,
+            {
+              limitBy: {
+                per_page: 999,
+                page: 1,
+              },
+            }
+          );
           return response?.data.map((d: any) => {
             return {
               value: d.uuid,

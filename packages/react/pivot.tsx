@@ -8,7 +8,7 @@ import resolveByDot from "./helpers/resolveByDot";
 import { materialCells } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import FormWrapper from "./helpers/FormWrapper";
-import { callMental, getByUuid } from "./helpers/callMental";
+import { callLoco, getByUuid } from "./helpers/callLoco";
 
 const NextJSLink = (props: any) => {
   let { href, children, ...rest } = props;
@@ -24,11 +24,13 @@ const Pivot = ({
   router,
   formInstance,
   primaryIdentifier,
+  routePrefix,
 }: {
   resourceSpec: any;
   router: any;
   formInstance: any;
   primaryIdentifier: any;
+  routePrefix: any;
 }) => {
   let endpoint = router.query?.loco;
   const attributeIdentifier = endpoint[2];
@@ -74,7 +76,7 @@ const Pivot = ({
 
       e.preventDefault();
       formInstance.startProcessing();
-      await callMental(resource, `_patch`, payload);
+      await callLoco(routePrefix, resource, `_patch`, payload);
       formInstance.finishProcessing();
       router.push(`/${resource}/${primaryIdentifier}`);
     } catch (errors: any) {
@@ -111,6 +113,7 @@ const Pivot = ({
 
     (async () => {
       const resourceData: any = await getByUuid(
+        routePrefix,
         resourceSpec.name,
         primaryIdentifier
       );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { callMental, getByUuid } from "./helpers/callMental";
+import { callLoco, getByUuid } from "./helpers/callLoco";
 import {
   DataTableBase,
   NavigationPageHeading,
@@ -40,10 +40,12 @@ const View = ({
   resourceSpec,
   router,
   primaryIdentifier,
+  routePrefix,
 }: {
   resourceSpec: any;
   router: any;
   primaryIdentifier: any;
+  routePrefix: any;
 }) => {
   const [readOne, setReadOne] = useState<any>({});
   const [hasManyAttributes, setHasManyAttributes] = useState<any>([]);
@@ -78,6 +80,7 @@ const View = ({
 
     (async () => {
       const response: any = await getByUuid(
+        routePrefix,
         resourceSpec.name,
         primaryIdentifier
       );

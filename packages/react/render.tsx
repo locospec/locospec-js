@@ -6,12 +6,13 @@ import List from "./list";
 import View from "./view";
 import Pivot from "./pivot";
 import Link from "next/link";
-import { callMental, getByUuid } from "./helpers/callMental";
+import { callLoco, getByUuid } from "./helpers/callLoco";
 import resolveByDot from "./helpers/resolveByDot";
 
-const LocoSpecUI = (router: any) => {
+const LocoSpecUI = (router: any, prefix: any) => {
   const resource = router.query.resource;
 
+  const [routePrefix, setRoutePrefix] = useState(prefix);
   const [action, setAction] = useState("none");
   const [resourceSpec, setResourceSpec] = useState<any>({});
   const [resourceData, setResourceData] = useState<any>({});
@@ -23,7 +24,11 @@ const LocoSpecUI = (router: any) => {
   useEffect(() => {
     (async () => {
       if (resource !== undefined) {
-        let resourceConfig: any = await callMental(resource, "_config");
+        let resourceConfig: any = await callLoco(
+          routePrefix,
+          resource,
+          "_config"
+        );
         setResourceSpec(resourceConfig);
 
         let endpoint = router.query?.loco;
@@ -37,7 +42,7 @@ const LocoSpecUI = (router: any) => {
             (async () => {
               await setReady(false);
 
-              const data: any = await callMental(resource, `_read`, {
+              const data: any = await callLoco(routePrefix, resource, `_read`, {
                 filterBy: [
                   {
                     attribute: "uuid",
@@ -93,6 +98,7 @@ const LocoSpecUI = (router: any) => {
               router={router}
               formInstance={formInstance}
               primaryIdentifier={primaryIdentifier}
+              routePrefix={routePrefix}
             />
           )}
 
@@ -103,13 +109,18 @@ const LocoSpecUI = (router: any) => {
                 router={router}
                 formInstance={formInstance}
                 primaryIdentifier={primaryIdentifier}
+                routePrefix={routePrefix}
               />{" "}
             </>
           )}
 
           {ready && action === "read_all" && (
             <>
-              <List resourceSpec={resourceSpec} router={router} />
+              <List
+                resourceSpec={resourceSpec}
+                router={router}
+                routePrefix={routePrefix}
+              />
             </>
           )}
 
@@ -119,6 +130,7 @@ const LocoSpecUI = (router: any) => {
                 resourceSpec={resourceSpec}
                 router={router}
                 primaryIdentifier={primaryIdentifier}
+                routePrefix={routePrefix}
               />
             </>
           )}

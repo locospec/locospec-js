@@ -1,8 +1,13 @@
 import { axiosObject } from "./axios";
 
-function callMental(resource: string, action: string, payload: any = {}) {
+function callLoco(
+  routePrefix: string,
+  resource: string,
+  action: string,
+  payload: any = {}
+) {
   return new Promise((resolve, reject) => {
-    let uri = `/loco/resource/${resource}/${action}`;
+    let uri = `/${routePrefix}/resource/${resource}/${action}`;
 
     // console.log("payload", payload);
 
@@ -30,8 +35,8 @@ function callMental(resource: string, action: string, payload: any = {}) {
   });
 }
 
-async function getByUuid(resource: string, uuid: string) {
-  const response: any = await callMental(resource, `_read`, {
+async function getByUuid(routePrefix: string, resource: string, uuid: string) {
+  const response: any = await callLoco(routePrefix, resource, `_read`, {
     filterBy: [
       {
         attribute: "uuid",
@@ -44,11 +49,16 @@ async function getByUuid(resource: string, uuid: string) {
   return response?.data[0];
 }
 
-async function createFile(resource: string, file: any, params = {}) {
+async function createFile(
+  routePrefix: string,
+  resource: string,
+  file: any,
+  params = {}
+) {
   return new Promise((resolve, reject) => {
     const action = "_create";
 
-    let uri = `/data/resource/${resource}/${action}`;
+    let uri = `/${routePrefix}/resource/${resource}/${action}`;
 
     let formData = new FormData();
     formData.append("file", file);
@@ -69,4 +79,4 @@ async function createFile(resource: string, file: any, params = {}) {
   });
 }
 
-export { callMental, getByUuid, createFile };
+export { callLoco, getByUuid, createFile };

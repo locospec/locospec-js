@@ -12,7 +12,7 @@ const Loco: NextPage = () => {
   }, []);
 
   const { action, setAction, resourceSpec, setResourceSpec, showUI } =
-    useLocoRenderer(router);
+    useLocoRenderer(router, "loco");
 
   if (router.query.resource !== undefined) {
     return <div className="max-w-7xl mx-auto p-6">{showUI()}</div>;

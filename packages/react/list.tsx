@@ -5,7 +5,7 @@ import {
   ModalConfirm,
 } from "@reusejs/react";
 import { useEffect, useState, useRef } from "react";
-import { callMental } from "./helpers/callMental";
+import { callLoco } from "./helpers/callLoco";
 import Divider from "./helpers/divider";
 import resolveByDot from "./helpers/resolveByDot";
 import {
@@ -38,7 +38,15 @@ const Content = () => {
   );
 };
 
-const List = ({ resourceSpec, router }: { resourceSpec: any; router: any }) => {
+const List = ({
+  resourceSpec,
+  router,
+  routePrefix,
+}: {
+  resourceSpec: any;
+  router: any;
+  routePrefix: any;
+}) => {
   const callOnRowClick = async (item: any) => {
     router.push(`/${resourceSpec.name}/${item.uuid}`);
   };
@@ -77,7 +85,7 @@ const List = ({ resourceSpec, router }: { resourceSpec: any; router: any }) => {
         },
       })
     ) {
-      await callMental(resourceSpec.name, `_delete`, {
+      await callLoco(routePrefix, resourceSpec.name, `_delete`, {
         filterBy: [
           {
             attribute: "uuid",
@@ -299,7 +307,8 @@ const List = ({ resourceSpec, router }: { resourceSpec: any; router: any }) => {
 
             payload["filterBy"] = filterBy;
 
-            const response: any = await callMental(
+            const response: any = await callLoco(
+              routePrefix,
               resourceSpec.name,
               `_read`,
               payload

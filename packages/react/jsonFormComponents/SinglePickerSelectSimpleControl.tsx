@@ -7,7 +7,7 @@ import {
   PickerSelectSimple,
   ToggleBase,
 } from "@reusejs/react";
-import { callMental } from "../helpers/callMental";
+import { callLoco } from "../helpers/callLoco";
 import { useJsonForms } from "@jsonforms/react";
 import useEffectAfterFirstRender from "./useEffectAfterFirstRender";
 
@@ -39,21 +39,21 @@ const PickerSelectSimpleControl = (props: any) => {
 
   // console.log("props.data", props.data);
 
-  const mentalSpec = props.uischema.options.mental;
-  //   console.log("PickerSelectSimpleControl", props.path, mentalSpec);
+  const locoSpec = props.uischema.options.loco;
+  //   console.log("PickerSelectSimpleControl", props.path, locoSpec);
 
-  if (mentalSpec.dependsOn !== undefined) {
+  if (locoSpec.dependsOn !== undefined) {
     useEffectAfterFirstRender(() => {
       console.log(
         "Changed",
-        mentalSpec.dependsOn,
-        ctx?.core?.data[mentalSpec.dependsOn]
+        locoSpec.dependsOn,
+        ctx?.core?.data[locoSpec.dependsOn]
       );
       props.handleChange(props.path, []);
       setRefresh((prev: string) => {
         return prev + 1;
       });
-    }, [ctx?.core?.data[mentalSpec.dependsOn]]);
+    }, [ctx?.core?.data[locoSpec.dependsOn]]);
   }
 
   return (
@@ -87,9 +87,14 @@ const PickerSelectSimpleControl = (props: any) => {
         // }
 
         // console.log("dataSource", filterBy);
-        let response: any = await callMental(mentalSpec.resource, `_read`, {
-          filterBy: filterBy,
-        });
+        let response: any = await callLoco(
+          locoSpec.prefix,
+          locoSpec.resource,
+          `_read`,
+          {
+            filterBy: filterBy,
+          }
+        );
         // // console.log("Search", query, response);
         return response?.data.map((d: any) => {
           return {

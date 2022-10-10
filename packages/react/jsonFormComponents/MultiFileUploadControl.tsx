@@ -2,7 +2,7 @@ import * as React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { ButtonBase, FileUploaderBase, LabelBase } from "@reusejs/react";
 import useEffectAfterFirstRender from "./useEffectAfterFirstRender";
-import { createFile } from "../helpers/callMental";
+import { createFile } from "../helpers/callLoco";
 
 const ErrorText = (props: any) => (
   <div className="mt-2 text-xs text-red-500 lowercase">
@@ -84,7 +84,8 @@ const MultiFileUploadControl = (props: any) => {
   const [afterUploadedFiles, setAfterUploadedFiles] = React.useState<any>([]);
   const [selectedFiles, setSelectedFiles] = React.useState<any>([]);
 
-  const mentalSpec = props.uischema.options.mental;
+  const attributeSpec = props.uischema.options.attributeSpec;
+  const locoSpec = props.uischema.options.loco;
 
   // console.log("params", params);
 
@@ -106,7 +107,12 @@ const MultiFileUploadControl = (props: any) => {
             setSelectedFiles(selectedFiles);
           }}
           upload={async (selectedFile) => {
-            return await createFile("files", selectedFile, mentalSpec.params);
+            return await createFile(
+              locoSpec.prefix,
+              "files",
+              selectedFile,
+              attributeSpec.params
+            );
           }}
           beforeUpload={(uploadedFiles) => {
             // console.log("beforeUpload", uploadedFiles);

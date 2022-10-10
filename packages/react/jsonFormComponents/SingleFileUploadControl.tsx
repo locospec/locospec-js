@@ -2,7 +2,7 @@ import * as React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { ButtonBase, FileUploaderBase, LabelBase } from "@reusejs/react";
 import useEffectAfterFirstRender from "./useEffectAfterFirstRender";
-import { createFile } from "../helpers/callMental";
+import { createFile } from "../helpers/callLoco";
 
 const ErrorText = (props: any) => (
   <div className="mt-2 text-xs text-red-500 lowercase">
@@ -71,12 +71,13 @@ const SingleFileUploadControl = (props: any) => {
   const [afterUploadedFiles, setAfterUploadedFiles] = React.useState<any>([]);
   const [selectedFiles, setSelectedFiles] = React.useState<any>([]);
 
-  const mentalSpec = props.uischema.options.mental;
+  const attributeSpec = props.uischema.options.attributeSpec;
+  const locoSpec = props.uischema.options.loco;
 
-  // console.log("mentalSpec", mentalSpec);
+  // console.log("attributeSpec", attributeSpec);
 
-  let params = mentalSpec.relation.filter;
-  params[mentalSpec.relation.foreignKey] = mentalSpec.primaryIdentifier;
+  let params = attributeSpec.relation.filter;
+  params[attributeSpec.relation.foreignKey] = attributeSpec.primaryIdentifier;
 
   // console.log("params", params);
 
@@ -98,7 +99,12 @@ const SingleFileUploadControl = (props: any) => {
             setSelectedFiles(selectedFiles);
           }}
           upload={async (selectedFile) => {
-            return await createFile("files", selectedFile, params);
+            return await createFile(
+              locoSpec.prefix,
+              "files",
+              selectedFile,
+              params
+            );
           }}
           beforeUpload={(uploadedFiles) => {
             // console.log("beforeUpload", uploadedFiles);
