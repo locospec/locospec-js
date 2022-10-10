@@ -23,6 +23,8 @@
     "publish:operator-knexjs": "cd packages/operator-knexjs && npm publish",
     "patch:loco-nobe": "yarn patch:engine && yarn patch:operator-knexjs",
     "publish:loco-nobe": "yarn publish:engine && yarn publish:operator-knexjs",
+    "patch:react": "cd packages/react && npm version patch",
+    "publish:react": "cd packages/react && npm publish",
     "admin:start": "npx concurrently 'yarn nobelite:serve' 'yarn admin:serve'"
   },
   "devDependencies": {
