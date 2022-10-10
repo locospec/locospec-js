@@ -197,7 +197,13 @@ const View = ({
       );
     }
 
-    if (resolveByDot("type", detailProps) === "file") {
+    if (
+      resolveByDot("type", detailProps) === "file" &&
+      resolveByDot("relation.type", attribute) === "has_many"
+    ) {
+      if (localValue === "-") {
+        localValue = [];
+      }
       // localValue = localValue.uuid;
     }
 
@@ -228,7 +234,10 @@ const View = ({
             <dd className="mt-1 text-sm text-gray-900">
               {resolveByDot(`ui.detail.type`, attribute) === "file" &&
                 resolveByDot("relation.type", attribute) === "has_many" && (
-                  <FileBrowser files={getValue(attribute)} />
+                  <>
+                    {/* {JSON.stringify(getValue(attribute))} */}
+                    <FileBrowser files={getValue(attribute)} />
+                  </>
                 )}
 
               {resolveByDot(`ui.detail.type`, attribute) === "list" &&

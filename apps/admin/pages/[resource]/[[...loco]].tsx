@@ -8,7 +8,7 @@ const Loco: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("Mounted loco page");
+    // console.log("Mounted loco page");
   }, []);
 
   const { action, setAction, resourceSpec, setResourceSpec, showUI } =

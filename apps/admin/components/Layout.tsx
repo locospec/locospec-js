@@ -55,6 +55,12 @@ const navigation = [
     current: true,
   },
   { name: "Cities", resource: "cities", icon: MenuAlt3Icon, current: true },
+  {
+    name: "Properties",
+    resource: "properties",
+    icon: MenuAlt3Icon,
+    current: true,
+  },
 ];
 
 const userNavigation = [

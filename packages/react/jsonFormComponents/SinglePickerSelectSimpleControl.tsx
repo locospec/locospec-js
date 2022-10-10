@@ -30,6 +30,8 @@ interface TextInputControlProps {
 
 const PickerSelectSimpleControl = (props: any) => {
   const ctx = useJsonForms();
+  const [disabled, setDisabled] = React.useState<any>(!props.enabled);
+  const [dependsOnValue, setDependsOnValue] = React.useState<any>({});
   const [refresh, setRefresh] = React.useState<string>("0");
   const [value, setValue] = React.useState<any>(
     props.data !== undefined && Object.keys(props.data).length > 0
@@ -40,20 +42,31 @@ const PickerSelectSimpleControl = (props: any) => {
   // console.log("props.data", props.data);
 
   const locoSpec = props.uischema.options.loco;
-  //   console.log("PickerSelectSimpleControl", props.path, locoSpec);
+  // console.log("PickerSelectSimpleControl", props.path, locoSpec.dependsOn);
+
+  React.useEffect(() => {
+    if (props.path === "city_uuid") {
+      console.log("mounted selectpiker", ctx?.core?.data);
+    }
+  }, []);
 
   if (locoSpec.dependsOn !== undefined) {
     useEffectAfterFirstRender(() => {
-      console.log(
-        "Changed",
-        locoSpec.dependsOn,
-        ctx?.core?.data[locoSpec.dependsOn]
-      );
+      let dependsOnValue = ctx?.core?.data[locoSpec.dependsOn.attribute];
+      let dependsOnValueKeys = Object.keys(dependsOnValue);
+
+      if (dependsOnValueKeys.length > 0) {
+        setDependsOnValue(dependsOnValue);
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+
       props.handleChange(props.path, []);
       setRefresh((prev: string) => {
         return prev + 1;
       });
-    }, [ctx?.core?.data[locoSpec.dependsOn]]);
+    }, [ctx?.core?.data[locoSpec.dependsOn.attribute]]);
   }
 
   return (
@@ -63,7 +76,7 @@ const PickerSelectSimpleControl = (props: any) => {
       enableClear={false}
       enableClose={false}
       multiple={false}
-      disabled={!props.enabled}
+      disabled={disabled}
       enableSearch={true}
       defaultSelected={value}
       dataSource={async (query: any) => {
@@ -76,6 +89,17 @@ const PickerSelectSimpleControl = (props: any) => {
             attribute: "name",
             op: "LIKE",
             value: query,
+          });
+        }
+
+        if (
+          locoSpec.dependsOn !== undefined &&
+          Object.keys(ctx?.core?.data[locoSpec.dependsOn.attribute]).length > 0
+        ) {
+          filterBy.push({
+            attribute: locoSpec.dependsOn.filterBy,
+            op: "eq",
+            value: ctx?.core?.data[locoSpec.dependsOn.attribute]["value"],
           });
         }
 

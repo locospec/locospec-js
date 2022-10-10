@@ -41,7 +41,7 @@ function CreateOrEditForm({
   primaryIdentifier: any;
   routePrefix: any;
 }) {
-  console.log("router", router);
+  // console.log("router", router);
 
   const resource = router.query.resource;
   const [schema, setSchema] = useState<any>({
@@ -117,7 +117,7 @@ function CreateOrEditForm({
     const localUISchemaElements: any = [];
     const localFormData: any = {};
 
-    // console.log("resourceData", resourceData);
+    // console.log("CreateOrEdit Mounted");
 
     (async () => {
       for (let index = 0; index < attributes.length; index++) {
@@ -264,7 +264,8 @@ function CreateOrEditForm({
               break;
 
             case "SinglePickerSelectSimple":
-              // console.log("attribute", attribute);
+              let dependsOn = resolveByDot(`ui.${action}.dependsOn`, attribute);
+              // console.log("attribute", dependsOn);
               localSchemaProperties[attribute.resolved_identifier] = {
                 type: "object",
               };
@@ -275,6 +276,7 @@ function CreateOrEditForm({
                 options: {
                   reusejs: uiComponent,
                   loco: {
+                    dependsOn: dependsOn,
                     resource: attribute.relation.resource,
                     prefix: routePrefix,
                   },
@@ -282,16 +284,34 @@ function CreateOrEditForm({
               });
 
               if (action === "update") {
-                console.log("resourceData", resourceData);
-                let response: any = await getByUuid(
-                  routePrefix,
-                  attribute.relation.resource,
-                  resourceData[attribute.resolved_identifier]
+                let valueKeyInResponse = resolveByDot(
+                  `ui.${action}.valueKeyInResponse`,
+                  attribute
                 );
-                response["label"] = response["name"];
-                response["value"] = response["uuid"];
 
-                localFormData[attribute.resolved_identifier] = response;
+                if (valueKeyInResponse !== undefined) {
+                  let response: any = {};
+                  let dependsOnData = resourceData[valueKeyInResponse];
+                  // console.log("update scenario", valueKeyInResponse);
+                  // console.log("dependsOnData", dependsOnData);
+
+                  response["label"] = dependsOnData["name"];
+                  response["value"] = dependsOnData["uuid"];
+
+                  // console.log("update scenario", valueKeyInResponse, response);
+
+                  localFormData[attribute.resolved_identifier] = response;
+                } else {
+                  let response: any = await getByUuid(
+                    routePrefix,
+                    attribute.relation.resource,
+                    resourceData[attribute.resolved_identifier]
+                  );
+                  response["label"] = response["name"];
+                  response["value"] = response["uuid"];
+
+                  localFormData[attribute.resolved_identifier] = response;
+                }
               } else {
                 localFormData[attribute.resolved_identifier] = {};
               }
@@ -334,6 +354,8 @@ function CreateOrEditForm({
             resourceData[attribute.resolved_identifier];
         }
       }
+
+      // console.log("localSchemaProperties", localSchemaProperties);
 
       await Promise.all([
         await setSchema((prev: any) => {

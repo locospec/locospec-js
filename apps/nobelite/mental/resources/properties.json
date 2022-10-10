@@ -52,6 +52,10 @@
     "state": {
       "label": "State",
       "mutateFrom": "city_uuid",
+      "relation": {
+        "resolveTo": "state_uuid",
+        "resource": "states"
+      },
       "facet": {
         "tag": "state",
         "value": "uuid",
@@ -81,6 +85,54 @@
         }
       ],
       "ui": {
+        "create": {
+          "component": "SinglePickerSelectSimple",
+          "valueKeyInResponse": "state"
+        },
+        "update": {
+          "component": "SinglePickerSelectSimple",
+          "valueKeyInResponse": "state"
+        },
+        "detail": {
+          "display": true,
+          "displayKey": "name"
+        }
+      }
+    },
+    "district": {
+      "label": "District",
+      "mutateFrom": "city_uuid",
+      "relation": {
+        "resolveTo": "district_uuid",
+        "resource": "districts"
+      },
+      "transformations": [
+        {
+          "operation": "find",
+          "resource": "cities",
+          "findByKey": "uuid",
+          "findByValue": "city_uuid",
+          "extract": ["district_uuid"]
+        },
+        {
+          "operation": "find",
+          "resource": "districts",
+          "findByKey": "uuid",
+          "findByValue": "district_uuid",
+          "extract": ["name", "slug", "uuid"]
+        }
+      ],
+      "ui": {
+        "create": {
+          "component": "SinglePickerSelectSimple",
+          "valueKeyInResponse": "district",
+          "dependsOn": { "attribute": "state_uuid", "filterBy": "state_uuid" }
+        },
+        "update": {
+          "component": "SinglePickerSelectSimple",
+          "valueKeyInResponse": "district",
+          "dependsOn": { "attribute": "state_uuid", "filterBy": "state_uuid" }
+        },
         "detail": {
           "display": true,
           "displayKey": "name"
@@ -114,10 +166,18 @@
       },
       "ui": {
         "create": {
-          "component": "SinglePickerSelectSimple"
+          "component": "SinglePickerSelectSimple",
+          "dependsOn": {
+            "attribute": "district_uuid",
+            "filterBy": "district_uuid"
+          }
         },
         "update": {
-          "component": "SinglePickerSelectSimple"
+          "component": "SinglePickerSelectSimple",
+          "dependsOn": {
+            "attribute": "district_uuid",
+            "filterBy": "district_uuid"
+          }
         },
         "list": {
           "display": true,
