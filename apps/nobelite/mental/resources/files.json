@@ -1,0 +1,143 @@
+{
+  "name": "files",
+  "label": "Files",
+  "primary": ["uuid"],
+  "softDelete": true,
+  "meta": {
+    "table": "files"
+  },
+  "mixins": ["datetime-in-resource.json"],
+  "attributes": {
+    "uuid": {
+      "label": "UUID",
+      "operations": {
+        "create": {
+          "validate": [{ "type": "uuid" }]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "files",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "mime": {
+      "label": "mime",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "file_name": {
+      "label": "file_name",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "path_to_file": {
+      "label": "path_to_file",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "MultiFileUploader",
+          "params": ["owner_identifier", "owner_service"]
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "owner_service": {
+      "label": "owner_service",
+      "operations": {
+        "*": {},
+        "create,update": {}
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "owner_identifier": {
+      "label": "owner_identifier",
+      "operations": {
+        "*": {},
+        "create,update": {}
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "meta": {
+      "label": "meta",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": []
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "download_url": {
+      "label": "View URL",
+      "mutateFrom": "download_url",
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    }
+  }
+}

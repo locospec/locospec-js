@@ -61,6 +61,7 @@ const navigation = [
     icon: MenuAlt3Icon,
     current: true,
   },
+  { name: "Files", resource: "files", icon: MenuAlt3Icon, current: true },
 ];
 
 const userNavigation = [
