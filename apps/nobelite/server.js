@@ -4,6 +4,8 @@ const bootstrapMental = require("./mental/bootstrap");
 
 const server = httpServer({});
 
+server.register(require("@fastify/multipart", { attachFieldsToBody: true }));
+
 bootstrapMental(server);
 
 server.listen(
