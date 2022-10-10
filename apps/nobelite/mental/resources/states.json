@@ -1,0 +1,128 @@
+{
+  "name": "states",
+  "label": "States",
+  "primary": ["uuid"],
+  "softDelete": true,
+  "meta": {
+    "table": "states"
+  },
+  "mixins": ["datetime-in-resource.json"],
+  "attributes": {
+    "uuid": {
+      "label": "UUID",
+      "operations": {
+        "create": {
+          "generate": "uuid",
+          "validate": [{ "type": "uuid" }]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "states",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "name": {
+      "label": "Name",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        },
+        "create": {
+          "validate": [
+            {
+              "type": "unique",
+              "table": "states",
+              "includeAttributes": [],
+              "excludeAttributes": []
+            }
+          ]
+        },
+        "update": {
+          "validate": [
+            {
+              "type": "unique",
+              "table": "states",
+              "includeAttributes": [],
+              "excludeAttributes": ["uuid"]
+            }
+          ]
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        },
+        "detail": {
+          "display": true
+        },
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "slug": {
+      "label": "Slug",
+      "operations": {
+        "create": {
+          "generate": [
+            {
+              "type": "custom_generator",
+              "value": "generateSlug",
+              "source": "name"
+            }
+          ],
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "states",
+              "includeAttributes": [],
+              "excludeAttributes": []
+            },
+            {
+              "type": "custom_validator",
+              "value": "noWhiteSpace"
+            }
+          ]
+        },
+        "update": {}
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "districts": {
+      "label": "Districts",
+      "relation": {
+        "localKey": "uuid",
+        "foreignKey": "state_uuid",
+        "type": "has_many",
+        "resource": "districts"
+      }
+    }
+  }
+}

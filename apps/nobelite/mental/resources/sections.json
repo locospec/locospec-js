@@ -1,0 +1,174 @@
+{
+  "name": "sections",
+  "label": "Sections",
+  "primary": ["uuid"],
+  "softDelete": true,
+  "meta": {
+    "table": "sections"
+  },
+  "sortBy": [
+    {
+      "attribute": "order",
+      "order": "asc"
+    },
+    {
+      "attribute": "updated_at",
+      "order": "desc"
+    }
+  ],
+  "mixins": ["datetime-in-resource.json"],
+  "attributes": {
+    "uuid": {
+      "label": "UUID",
+      "operations": {
+        "create": {
+          "generate": "uuid",
+          "validate": [{ "type": "uuid" }]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "sections",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "title": {
+      "label": "Title",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        },
+        "create": {
+          "validate": []
+        },
+        "update": {
+          "validate": []
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        },
+        "detail": {
+          "display": true
+        },
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "order": {
+      "label": "Order",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        },
+        "create": {
+          "validate": []
+        },
+        "update": {
+          "validate": []
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true
+        },
+        "detail": {
+          "display": true
+        },
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "slug": {
+      "label": "Slug",
+      "operations": {
+        "create": {
+          "generate": [
+            {
+              "type": "custom_generator",
+              "value": "generateSlug",
+              "source": "title"
+            }
+          ],
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "sections",
+              "includeAttributes": [],
+              "excludeAttributes": []
+            },
+            {
+              "type": "custom_validator",
+              "value": "noWhiteSpace"
+            }
+          ]
+        },
+        "update": {}
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "source_of_truth_uuid": {
+      "relation": {
+        "resolveTo": "source_of_truth_uuid",
+        "foreignKey": "uuid",
+        "type": "belongs_to_one",
+        "resource": "sources-of-truth"
+      },
+      "operations": {
+        "create": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "sources_of_truth",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "PrefillFromUrl"
+        }
+      }
+    },
+    "content_json": {
+      "label": "Content",
+      "ui": {
+        "create": {
+          "component": "TextEditor"
+        },
+        "update": {
+          "component": "TextEditor"
+        }
+      }
+    }
+  }
+}

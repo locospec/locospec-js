@@ -1,0 +1,318 @@
+{
+  "name": "properties",
+  "label": "Properties",
+  "primary": ["uuid"],
+  "softDelete": true,
+  "facet": {
+    "tagsColumns": "tags",
+    "tsvColumn": "tsv"
+  },
+  "meta": {
+    "table": "properties"
+  },
+  "mixins": ["datetime-in-resource.json"],
+  "attributes": {
+    "images": {
+      "label": "Images",
+      "relation": {
+        "localKey": "uuid",
+        "foreignKey": "owner_identifier",
+        "type": "has_many",
+        "resource": "files",
+        "filter": {
+          "owner_service": "property-image"
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true,
+          "type": "file"
+        }
+      }
+    },
+    "documents": {
+      "label": "Documents",
+      "relation": {
+        "resolveTo": "documents",
+        "localKey": "uuid",
+        "foreignKey": "owner_identifier",
+        "type": "has_many",
+        "resource": "files",
+        "filter": {
+          "owner_service": "property-document"
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true,
+          "type": "file"
+        }
+      }
+    },
+    "state": {
+      "label": "State",
+      "mutateFrom": "city_uuid",
+      "facet": {
+        "tag": "state",
+        "value": "uuid",
+        "resource": "states"
+      },
+      "transformations": [
+        {
+          "operation": "find",
+          "resource": "cities",
+          "findByKey": "uuid",
+          "findByValue": "city_uuid",
+          "extract": ["district_uuid"]
+        },
+        {
+          "operation": "find",
+          "resource": "districts",
+          "findByKey": "uuid",
+          "findByValue": "district_uuid",
+          "extract": ["name", "slug", "state_uuid"]
+        },
+        {
+          "operation": "find",
+          "resource": "states",
+          "findByKey": "uuid",
+          "findByValue": "state_uuid",
+          "extract": ["name", "slug", "uuid"]
+        }
+      ],
+      "ui": {
+        "detail": {
+          "display": true,
+          "displayKey": "name"
+        }
+      }
+    },
+    "city": {
+      "label": "City",
+      "relation": {
+        "resolveTo": "city_uuid",
+        "foreignKey": "uuid",
+        "type": "belongs_to_one",
+        "resource": "cities"
+      },
+      "facet": {
+        "tag": "city",
+        "value": "uuid",
+        "resource": "cities"
+      },
+      "operations": {
+        "create,update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "cities",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "SinglePickerSelectSimple"
+        },
+        "update": {
+          "component": "SinglePickerSelectSimple"
+        },
+        "list": {
+          "display": true,
+          "displayKey": "name"
+        },
+        "detail": {
+          "display": true,
+          "displayKey": "name"
+        }
+      }
+    },
+    "uuid": {
+      "label": "UUID",
+      "operations": {
+        "create": {
+          "generate": "uuid",
+          "validate": [{ "type": "uuid" }]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "properties",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "listing_id": {
+      "label": "Listing ID",
+      "operations": {
+        "create": {
+          "generate": [
+            {
+              "type": "custom_generator",
+              "value": "generateOTP",
+              "source": 5
+            }
+          ],
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "properties",
+              "includeAttributes": [],
+              "excludeAttributes": []
+            },
+            {
+              "type": "custom_validator",
+              "value": "noWhiteSpace"
+            }
+          ]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "properties",
+              "includeAttributes": [],
+              "excludeAttributes": ["uuid"]
+            },
+            {
+              "type": "custom_validator",
+              "value": "noWhiteSpace"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        },
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "owner_type": {
+      "label": "Owner Type",
+      "operations": {
+        "create": {
+          "validate": [{ "type": "required" }]
+        },
+        "update": {
+          "validate": [{ "type": "required" }]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "location_coordinates": {
+      "label": "Location Coordinates",
+      "ui": {
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    },
+    "emd_last_date": {
+      "label": "EMD Last Date",
+      "ui": {
+        "create": {
+          "component": "DatePickerBase"
+        },
+        "update": {
+          "component": "DatePickerBase"
+        },
+        "detail": {
+          "display": true,
+          "type": "date"
+        }
+      }
+    },
+    "description": {
+      "label": "Description",
+      "ui": {
+        "create": {
+          "component": "TextAreaBase"
+        },
+        "update": {
+          "component": "TextAreaBase"
+        },
+        "detail": {
+          "display": true
+        }
+      }
+    }
+  },
+  "filterBy": {
+    "state": {
+      "localKey": "properties.city_uuid",
+      "operation": "in",
+      "transformations": [
+        {
+          "operation": "in",
+          "resource": "states",
+          "findByKey": "slug",
+          "findByValue": "state",
+          "extract": "uuid"
+        },
+        {
+          "operation": "in",
+          "resource": "districts",
+          "findByKey": "state_uuid",
+          "findByValue": "state",
+          "extract": "uuid"
+        },
+        {
+          "operation": "in",
+          "resource": "cities",
+          "findByKey": "district_uuid",
+          "findByValue": "state",
+          "extract": "uuid"
+        }
+      ]
+    },
+    "city": {
+      "localKey": "properties.city_uuid",
+      "operation": "in",
+      "transformations": [
+        {
+          "operation": "in",
+          "resource": "cities",
+          "findByKey": "slug",
+          "findByValue": "city",
+          "extract": "uuid"
+        }
+      ]
+    }
+  }
+}

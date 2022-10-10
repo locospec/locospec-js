@@ -1,0 +1,223 @@
+{
+  "name": "cities",
+  "label": "Cities",
+  "primary": ["uuid"],
+  "meta": {
+    "table": "cities"
+  },
+  "mixins": ["datetime-in-resource.json"],
+  "attributes": {
+    "district": {
+      "label": "District",
+      "relation": {
+        "resolveTo": "district_uuid",
+        "foreignKey": "uuid",
+        "type": "belongs_to_one",
+        "resource": "districts"
+      },
+      "operations": {
+        "create": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "exists",
+              "table": "districts",
+              "column": "uuid"
+            }
+          ]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "SinglePickerSelectSimple"
+        },
+        "update": {
+          "component": "SinglePickerSelectSimple"
+        },
+        "list": {
+          "display": true,
+          "displayKey": "name"
+        },
+        "detail": {
+          "display": true,
+          "displayKey": "name"
+        }
+      }
+    },
+    "uuid": {
+      "label": "UUID",
+      "operations": {
+        "create": {
+          "generate": "uuid",
+          "validate": [{ "type": "uuid" }]
+        }
+      }
+    },
+    "name": {
+      "label": "Name",
+      "operations": {
+        "create": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "cities",
+              "includeAttributes": ["district_uuid"],
+              "excludeAttributes": []
+            }
+          ]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "cities",
+              "includeAttributes": ["district_uuid"],
+              "excludeAttributes": ["uuid"]
+            }
+          ]
+        }
+      },
+      "ui": {
+        "create": {
+          "component": "TextInputBase"
+        },
+        "update": {
+          "component": "TextInputBase"
+        },
+        "detail": {
+          "display": true
+        },
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        }
+      }
+    },
+    "slug": {
+      "label": "Slug",
+      "operations": {
+        "create": {
+          "generate": [
+            {
+              "type": "custom_generator",
+              "value": "generateSlug",
+              "source": "name"
+            }
+          ],
+          "validate": [
+            {
+              "type": "unique",
+              "table": "cities",
+              "includeAttributes": [],
+              "excludeAttributes": []
+            }
+          ]
+        },
+        "update": {
+          "validate": [
+            { "type": "required" },
+            {
+              "type": "unique",
+              "table": "cities",
+              "includeAttributes": [],
+              "excludeAttributes": ["uuid"]
+            }
+          ]
+        }
+      },
+      "ui": {
+        "detail": {
+          "display": true
+        },
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        },
+        "update": {
+          "component": "TextInputBase"
+        }
+      }
+    },
+    "state": {
+      "label": "State",
+      "mutateFrom": "district_uuid",
+      "transformations": [
+        {
+          "operation": "find",
+          "resource": "districts",
+          "findByKey": "uuid",
+          "findByValue": "district_uuid",
+          "extract": ["state_uuid"]
+        },
+        {
+          "operation": "find",
+          "resource": "states",
+          "findByKey": "uuid",
+          "findByValue": "state_uuid",
+          "extract": ["name", "slug"]
+        }
+      ],
+      "ui": {
+        "detail": {
+          "display": true,
+          "displayKey": "name"
+        }
+      }
+    },
+    "properties": {
+      "label": "Properties",
+      "relation": {
+        "localKey": "uuid",
+        "foreignKey": "city_uuid",
+        "type": "has_many",
+        "resource": "properties"
+      }
+    },
+    "bank-branches": {
+      "label": "Bank Branches",
+      "relation": {
+        "localKey": "uuid",
+        "foreignKey": "city_uuid",
+        "type": "has_many",
+        "resource": "bank-branches"
+      }
+    }
+  },
+  "filterBy": {
+    "district": {
+      "localKey": "district_uuid",
+      "operation": "in",
+      "transformations": [
+        {
+          "operation": "in",
+          "resource": "districts",
+          "findByKey": "slug",
+          "findByValue": "district",
+          "extract": "uuid"
+        }
+      ]
+    },
+    "state": {
+      "localKey": "district_uuid",
+      "operation": "in",
+      "transformations": [
+        {
+          "operation": "in",
+          "resource": "states",
+          "findByKey": "slug",
+          "findByValue": "state",
+          "extract": "uuid"
+        },
+        {
+          "operation": "in",
+          "resource": "districts",
+          "findByKey": "state_uuid",
+          "findByValue": "state",
+          "extract": "uuid"
+        }
+      ]
+    }
+  }
+}
