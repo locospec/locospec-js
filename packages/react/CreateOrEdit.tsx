@@ -58,7 +58,7 @@ function CreateOrEditForm({
 
   const handleSubmit = async (e?: any) => {
     try {
-      const payload = formData;
+      const payload = { ...formData };
 
       if (action === "update") {
         payload["uuid"] = primaryIdentifier;
@@ -68,15 +68,33 @@ function CreateOrEditForm({
         if (Object.prototype.hasOwnProperty.call(payload, key)) {
           const element = payload[key];
 
-          // console.log("element", element, typeof element);
+          console.log(
+            "element",
+            element,
+            typeof element,
+            Array.isArray(element)
+          );
 
-          if (typeof element === "object" && element !== null) {
+          if (
+            typeof element === "object" &&
+            element !== null &&
+            !Array.isArray(element)
+          ) {
             payload[key] = element["value"];
+          }
+
+          if (
+            typeof element === "object" &&
+            element !== null &&
+            Array.isArray(element)
+          ) {
+            payload[key] = JSON.stringify(element);
           }
         }
       }
 
-      // console.log("createStateForm", action, formData);
+      console.log("createStateForm", action, payload);
+      // return false;
 
       // e.preventDefault();
       formInstance.startProcessing();
@@ -111,269 +129,341 @@ function CreateOrEditForm({
     }
   };
 
-  useEffect(() => {
-    const attributes = resourceSpec?.attributes;
+  const prepareJsonFormsSchema = async (attributes: any) => {
     const localSchemaProperties: any = {};
     const localUISchemaElements: any = [];
     const localFormData: any = {};
 
-    // console.log("CreateOrEdit Mounted");
+    for (let index = 0; index < attributes.length; index++) {
+      const attribute = attributes[index];
+      const uiComponent = resolveByDot(`ui.${action}.component`, attribute);
+      const type = resolveByDot(`ui.${action}.type`, attribute);
 
-    (async () => {
-      for (let index = 0; index < attributes.length; index++) {
-        const attribute = attributes[index];
-        const uiComponent = resolveByDot(`ui.${action}.component`, attribute);
-        if (uiComponent !== undefined) {
-          switch (uiComponent) {
+      if (type === "array") {
+        const arrayAttributes = resolveByDot(
+          `ui.${action}.atrtibutes`,
+          attribute
+        );
+
+        let arraySchemaProperties: any = {};
+        let arrayUISchemaElements: any = [];
+        let arrayFormData: any = {};
+
+        for (
+          let arrayIndex = 0;
+          arrayIndex < arrayAttributes.length;
+          arrayIndex++
+        ) {
+          const arrayAttribute = arrayAttributes[arrayIndex];
+          // console.log("arrayAttribute", arrayAttribute);
+
+          switch (arrayAttribute.uiComponent) {
             case "TextInputBase":
-            case "TextAreaBase":
-              localSchemaProperties[attribute.resolved_identifier] = {
+            default:
+              arraySchemaProperties[arrayAttribute.resolved_identifier] = {
                 type: "string",
               };
-              localUISchemaElements.push({
-                type: "Control",
-                label: attribute.label,
-                scope: `#/properties/${attribute.resolved_identifier}`,
-                options: {
-                  reusejs: uiComponent,
-                },
-              });
-
-              if (
-                resourceData[attribute.resolved_identifier] === null ||
-                resourceData[attribute.resolved_identifier] === undefined
-              ) {
-                resourceData[attribute.resolved_identifier] = "";
-              }
-
-              localFormData[attribute.resolved_identifier] =
-                resourceData[attribute.resolved_identifier];
+              // arrayUISchemaElements.push({
+              //   type: "Control",
+              //   label: arrayAttribute.label,
+              //   scope: `#/properties/${arrayAttribute.resolved_identifier}`,
+              //   options: {
+              //     reusejs: uiComponent,
+              //   },
+              // });
               break;
+          }
+        }
 
-            case "MultiFileUploader":
-              if (action === "update") {
-              }
+        localSchemaProperties[attribute.resolved_identifier] = {
+          type: "array",
+          items: {
+            type: "object",
+            properties: arraySchemaProperties,
+          },
+        };
 
-              if (action === "create") {
-                let prefillValues: any = {};
-                Object.entries(router.query).forEach((q: any) => {
-                  let [key, value] = q;
-                  if (key.startsWith("prefillValue-")) {
-                    key = key.replace(/prefillValue-/, "");
+        localUISchemaElements.push({
+          type: "Control",
+          label: attribute.label,
+          scope: `#/properties/${attribute.resolved_identifier}`,
+        });
 
-                    if (attribute.ui[action]["params"].includes(key)) {
-                      prefillValues[key] = value;
-                    }
+        localFormData[attribute.resolved_identifier] = [];
+
+        // console.log("arrayUISchemaElements", arrayUISchemaElements);
+      }
+
+      if (uiComponent !== undefined) {
+        switch (uiComponent) {
+          case "TextInputBase":
+          case "TextAreaBase":
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "string",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+              },
+            });
+
+            if (
+              resourceData[attribute.resolved_identifier] === null ||
+              resourceData[attribute.resolved_identifier] === undefined
+            ) {
+              resourceData[attribute.resolved_identifier] = "";
+            }
+
+            localFormData[attribute.resolved_identifier] =
+              resourceData[attribute.resolved_identifier];
+            break;
+
+          case "MultiFileUploader":
+            if (action === "update") {
+            }
+
+            if (action === "create") {
+              let prefillValues: any = {};
+              Object.entries(router.query).forEach((q: any) => {
+                let [key, value] = q;
+                if (key.startsWith("prefillValue-")) {
+                  key = key.replace(/prefillValue-/, "");
+
+                  if (attribute.ui[action]["params"].includes(key)) {
+                    prefillValues[key] = value;
                   }
-                });
+                }
+              });
 
-                attribute.params = prefillValues;
-                localSchemaProperties[attribute.resolved_identifier] = {
-                  type: "string",
-                };
-
-                localUISchemaElements.push({
-                  type: "Control",
-                  label: attribute.label,
-                  scope: `#/properties/${attribute.resolved_identifier}`,
-                  options: {
-                    reusejs: uiComponent,
-                    attributeSpec: attribute,
-                    loco: {
-                      prefix: routePrefix,
-                    },
-                  },
-                });
-                formInstance.startProcessing();
-              }
-              break;
-
-            case "SingleFileUploader":
-              if (action === "update") {
-                attribute.primaryIdentifier = primaryIdentifier;
-                localSchemaProperties[attribute.resolved_identifier] = {
-                  type: "string",
-                };
-                localUISchemaElements.push({
-                  type: "Control",
-                  label: attribute.label,
-                  scope: `#/properties/${attribute.resolved_identifier}`,
-                  options: {
-                    reusejs: uiComponent,
-                    attributeSpec: attribute,
-                    loco: {
-                      prefix: routePrefix,
-                    },
-                  },
-                });
-
-                localFormData[attribute.resolved_identifier] =
-                  resourceData[attribute.resolved_identifier];
-              }
-              break;
-
-            case "DatePickerBase":
-            case "DateTimePickerBase":
+              attribute.params = prefillValues;
               localSchemaProperties[attribute.resolved_identifier] = {
                 type: "string",
-                format: uiComponent === "DatePickerBase" ? "date" : "date-time",
               };
+
               localUISchemaElements.push({
                 type: "Control",
                 label: attribute.label,
                 scope: `#/properties/${attribute.resolved_identifier}`,
                 options: {
                   reusejs: uiComponent,
-                },
-              });
-
-              if (
-                resourceData[attribute.resolved_identifier] === null ||
-                resourceData[attribute.resolved_identifier] === undefined
-              ) {
-                resourceData[attribute.resolved_identifier] = "";
-              }
-
-              localFormData[attribute.resolved_identifier] = DateTime.fromISO(
-                resourceData[attribute.resolved_identifier]
-              ).toISO();
-              break;
-
-            case "ToggleBase":
-              localSchemaProperties[attribute.resolved_identifier] = {
-                type: "boolean",
-              };
-              localUISchemaElements.push({
-                type: "Control",
-                label: attribute.label,
-                scope: `#/properties/${attribute.resolved_identifier}`,
-                options: {
-                  reusejs: uiComponent,
-                },
-              });
-
-              if (
-                resourceData[attribute.resolved_identifier] === null ||
-                resourceData[attribute.resolved_identifier] === undefined
-              ) {
-                resourceData[attribute.resolved_identifier] = false;
-              }
-
-              localFormData[attribute.resolved_identifier] =
-                resourceData[attribute.resolved_identifier];
-              break;
-
-            case "SinglePickerSelectSimple":
-              let dependsOn = resolveByDot(`ui.${action}.dependsOn`, attribute);
-              // console.log("attribute", dependsOn);
-              localSchemaProperties[attribute.resolved_identifier] = {
-                type: "object",
-              };
-              localUISchemaElements.push({
-                type: "Control",
-                label: attribute.label,
-                scope: `#/properties/${attribute.resolved_identifier}`,
-                options: {
-                  reusejs: uiComponent,
+                  attributeSpec: attribute,
                   loco: {
-                    dependsOn: dependsOn,
-                    resource: attribute.relation.resource,
+                    prefix: routePrefix,
+                  },
+                },
+              });
+              formInstance.startProcessing();
+            }
+            break;
+
+          case "SingleFileUploader":
+            if (action === "update") {
+              attribute.primaryIdentifier = primaryIdentifier;
+              localSchemaProperties[attribute.resolved_identifier] = {
+                type: "string",
+              };
+              localUISchemaElements.push({
+                type: "Control",
+                label: attribute.label,
+                scope: `#/properties/${attribute.resolved_identifier}`,
+                options: {
+                  reusejs: uiComponent,
+                  attributeSpec: attribute,
+                  loco: {
                     prefix: routePrefix,
                   },
                 },
               });
 
-              if (action === "update") {
-                let valueKeyInResponse = resolveByDot(
-                  `ui.${action}.valueKeyInResponse`,
-                  attribute
-                );
+              localFormData[attribute.resolved_identifier] =
+                resourceData[attribute.resolved_identifier];
+            }
+            break;
 
-                if (valueKeyInResponse !== undefined) {
-                  let response: any = {};
-                  let dependsOnData = resourceData[valueKeyInResponse];
-                  // console.log("update scenario", valueKeyInResponse);
-                  // console.log("dependsOnData", dependsOnData);
+          case "DatePickerBase":
+          case "DateTimePickerBase":
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "string",
+              format: uiComponent === "DatePickerBase" ? "date" : "date-time",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+              },
+            });
 
-                  response["label"] = dependsOnData["name"];
-                  response["value"] = dependsOnData["uuid"];
+            if (
+              resourceData[attribute.resolved_identifier] === null ||
+              resourceData[attribute.resolved_identifier] === undefined
+            ) {
+              resourceData[attribute.resolved_identifier] = "";
+            }
 
-                  // console.log("update scenario", valueKeyInResponse, response);
+            localFormData[attribute.resolved_identifier] = DateTime.fromISO(
+              resourceData[attribute.resolved_identifier]
+            ).toISO();
+            break;
 
-                  localFormData[attribute.resolved_identifier] = response;
-                } else {
-                  let response: any = await getByUuid(
-                    routePrefix,
-                    attribute.relation.resource,
-                    resourceData[attribute.resolved_identifier]
-                  );
-                  response["label"] = response["name"];
-                  response["value"] = response["uuid"];
+          case "ToggleBase":
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "boolean",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+              },
+            });
 
-                  localFormData[attribute.resolved_identifier] = response;
-                }
+            if (
+              resourceData[attribute.resolved_identifier] === null ||
+              resourceData[attribute.resolved_identifier] === undefined
+            ) {
+              resourceData[attribute.resolved_identifier] = false;
+            }
+
+            localFormData[attribute.resolved_identifier] =
+              resourceData[attribute.resolved_identifier];
+            break;
+
+          case "SinglePickerSelectSimple":
+            let dependsOn = resolveByDot(`ui.${action}.dependsOn`, attribute);
+            // console.log("attribute", dependsOn);
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "object",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+                loco: {
+                  dependsOn: dependsOn,
+                  resource: attribute.relation.resource,
+                  prefix: routePrefix,
+                },
+              },
+            });
+
+            if (action === "update") {
+              let valueKeyInResponse = resolveByDot(
+                `ui.${action}.valueKeyInResponse`,
+                attribute
+              );
+
+              if (valueKeyInResponse !== undefined) {
+                let response: any = {};
+                let dependsOnData = resourceData[valueKeyInResponse];
+                // console.log("update scenario", valueKeyInResponse);
+                // console.log("dependsOnData", dependsOnData);
+
+                response["label"] = dependsOnData["name"];
+                response["value"] = dependsOnData["uuid"];
+
+                // console.log("update scenario", valueKeyInResponse, response);
+
+                localFormData[attribute.resolved_identifier] = response;
               } else {
-                localFormData[attribute.resolved_identifier] = {};
+                let response: any = await getByUuid(
+                  routePrefix,
+                  attribute.relation.resource,
+                  resourceData[attribute.resolved_identifier]
+                );
+                response["label"] = response["name"];
+                response["value"] = response["uuid"];
+
+                localFormData[attribute.resolved_identifier] = response;
               }
+            } else {
+              localFormData[attribute.resolved_identifier] = {};
+            }
 
-              break;
+            break;
 
-            case "PrefillFromUrl":
-              Object.entries(router.query).forEach((q: any) => {
-                let [key, value] = q;
-                if (key === `prefillValue-${attribute.resolved_identifier}`) {
-                  localFormData[attribute.resolved_identifier] = value;
-                }
-              });
+          case "PrefillFromUrl":
+            Object.entries(router.query).forEach((q: any) => {
+              let [key, value] = q;
+              if (key === `prefillValue-${attribute.resolved_identifier}`) {
+                localFormData[attribute.resolved_identifier] = value;
+              }
+            });
 
-              break;
+            break;
 
-            case "TextEditor":
-              localSchemaProperties[attribute.resolved_identifier] = {
-                type: "string",
-              };
-              localUISchemaElements.push({
-                type: "Control",
-                label: attribute.label,
-                scope: `#/properties/${attribute.resolved_identifier}`,
-                options: {
-                  reusejs: uiComponent,
-                  attributeSpec: attribute,
-                },
-              });
+          case "TextEditor":
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "string",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+                attributeSpec: attribute,
+              },
+            });
 
-              localFormData[attribute.resolved_identifier] =
-                resourceData[attribute.resolved_identifier];
-              break;
+            localFormData[attribute.resolved_identifier] =
+              resourceData[attribute.resolved_identifier];
+            break;
 
-            case "Documentor":
-              localSchemaProperties[attribute.resolved_identifier] = {
-                type: "string",
-              };
-              localUISchemaElements.push({
-                type: "Control",
-                label: attribute.label,
-                scope: `#/properties/${attribute.resolved_identifier}`,
-                options: {
-                  reusejs: uiComponent,
-                  attributeSpec: attribute,
-                },
-              });
+          case "Documentor":
+            localSchemaProperties[attribute.resolved_identifier] = {
+              type: "string",
+            };
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+              options: {
+                reusejs: uiComponent,
+                attributeSpec: attribute,
+              },
+            });
 
-              localFormData[attribute.resolved_identifier] =
-                resourceData[attribute.resolved_identifier];
-              break;
+            localFormData[attribute.resolved_identifier] =
+              resourceData[attribute.resolved_identifier];
+            break;
 
-            default:
-              break;
-          }
-        } else {
+          default:
+            break;
+        }
+      } else {
+        if (type !== "array") {
           localFormData[attribute.resolved_identifier] =
             resourceData[attribute.resolved_identifier];
         }
       }
+    }
 
+    console.log("localFormData", localFormData);
+
+    return { localSchemaProperties, localUISchemaElements, localFormData };
+  };
+
+  useEffect(() => {
+    const attributes = resourceSpec?.attributes;
+    // const localSchemaProperties: any = {};
+    // const localUISchemaElements: any = [];
+    // const localFormData: any = {};
+
+    // console.log("CreateOrEdit Mounted");
+
+    (async () => {
       // console.log("localSchemaProperties", localSchemaProperties);
+
+      const { localSchemaProperties, localUISchemaElements, localFormData } =
+        await prepareJsonFormsSchema(attributes);
 
       await Promise.all([
         await setSchema((prev: any) => {
@@ -415,7 +505,9 @@ function CreateOrEditForm({
                 data={formData}
                 renderers={renderers}
                 cells={materialCells}
-                onChange={({ data }) => setFormData(data)}
+                onChange={({ data }) => {
+                  return setFormData(data);
+                }}
                 validationMode="NoValidation"
                 additionalErrors={additionalErrors}
               />
