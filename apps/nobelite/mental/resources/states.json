@@ -152,7 +152,21 @@
           ]
         },
         "update": {
-          "component": "TextInputBase"
+          "type": "array",
+          "atrtibutes": [
+            {
+              "resolved_identifier": "name",
+              "uiComponent": "DatePickerBase"
+            },
+            {
+              "resolved_identifier": "email",
+              "uiComponent": "TextInputBase"
+            },
+            {
+              "resolved_identifier": "link",
+              "uiComponent": "TextInputBase"
+            }
+          ]
         }
       }
     }

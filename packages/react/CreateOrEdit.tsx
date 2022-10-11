@@ -189,7 +189,12 @@ function CreateOrEditForm({
           scope: `#/properties/${attribute.resolved_identifier}`,
         });
 
-        localFormData[attribute.resolved_identifier] = [];
+        if (action === "update") {
+          localFormData[attribute.resolved_identifier] =
+            resourceData[attribute.resolved_identifier];
+        } else {
+          localFormData[attribute.resolved_identifier] = [];
+        }
 
         // console.log("arrayUISchemaElements", arrayUISchemaElements);
       }
@@ -446,7 +451,7 @@ function CreateOrEditForm({
       }
     }
 
-    console.log("localFormData", localFormData);
+    console.log("localFormData", localSchemaProperties);
 
     return { localSchemaProperties, localUISchemaElements, localFormData };
   };
