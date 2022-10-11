@@ -15,7 +15,7 @@ const ReusejsComponent =
 
 export default rankWith(
   3, //increase rank as needed
-  ReusejsComponent("TextEditor")
+  ReusejsComponent("Documentor")
 );
 
 // export default rankWith(

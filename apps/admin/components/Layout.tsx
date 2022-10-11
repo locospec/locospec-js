@@ -62,6 +62,7 @@ const navigation = [
     current: true,
   },
   { name: "Files", resource: "files", icon: MenuAlt3Icon, current: true },
+  { name: "Sections", resource: "sections", icon: MenuAlt3Icon, current: true },
 ];
 
 const userNavigation = [

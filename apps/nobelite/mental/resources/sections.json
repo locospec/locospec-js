@@ -134,39 +134,14 @@
         }
       }
     },
-    "source_of_truth_uuid": {
-      "relation": {
-        "resolveTo": "source_of_truth_uuid",
-        "foreignKey": "uuid",
-        "type": "belongs_to_one",
-        "resource": "sources-of-truth"
-      },
-      "operations": {
-        "create": {
-          "validate": [
-            { "type": "required" },
-            {
-              "type": "exists",
-              "table": "sources_of_truth",
-              "column": "uuid"
-            }
-          ]
-        }
-      },
-      "ui": {
-        "create": {
-          "component": "PrefillFromUrl"
-        }
-      }
-    },
-    "content_json": {
+    "content": {
       "label": "Content",
       "ui": {
         "create": {
-          "component": "TextEditor"
+          "component": "Documentor"
         },
         "update": {
-          "component": "TextEditor"
+          "component": "Documentor"
         }
       }
     }

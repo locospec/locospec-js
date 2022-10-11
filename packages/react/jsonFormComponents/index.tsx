@@ -18,8 +18,14 @@ import SinglePickerSelectSimpleControlTester from "./SinglePickerSelectSimpleCon
 
 import MultiPickerCheckboxSimpleControl from "./MultiPickerCheckboxSimpleControl";
 import MultiPickerCheckboxSimpleControlTester from "./MultiPickerCheckboxSimpleControlTester";
-import TextEditorControlTester from "./TextEditorControlTester";
-import TextEditorControl from "./TextEditor/LexicalBase";
+// import DocumentorControl from "./DocumentorControl";
+import DocumentorControlTester from "./DocumentorControlTester";
+
+import dynamic from "next/dynamic";
+
+const DocumentorControl = dynamic(() => import("./DocumentorControl"), {
+  ssr: false,
+});
 
 const renderers = [
   ...materialRenderers,
@@ -50,8 +56,8 @@ const renderers = [
     renderer: MultiFileUploadControl,
   },
   {
-    tester: TextEditorControlTester,
-    renderer: TextEditorControl,
+    tester: DocumentorControlTester,
+    renderer: DocumentorControl,
   },
 ];
 

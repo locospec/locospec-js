@@ -2,7 +2,9 @@ const Config = require("./config")();
 const httpServer = requireHttpServer();
 const bootstrapMental = require("./mental/bootstrap");
 
-const server = httpServer({});
+const server = httpServer({
+  bodyLimit: 104857600,
+});
 
 server.register(require("@fastify/multipart", { attachFieldsToBody: true }));
 

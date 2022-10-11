@@ -56,7 +56,7 @@ function CreateOrEditForm({
   const [ready, setReady] = useState<any>(false);
   const [additionalErrors, setAdditionalErrors] = useState<any>([]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e?: any) => {
     try {
       const payload = formData;
 
@@ -78,7 +78,7 @@ function CreateOrEditForm({
 
       // console.log("createStateForm", action, formData);
 
-      e.preventDefault();
+      // e.preventDefault();
       formInstance.startProcessing();
       await callLoco(routePrefix, resource, `_${action}`, payload);
       formInstance.finishProcessing();
@@ -346,6 +346,24 @@ function CreateOrEditForm({
                 resourceData[attribute.resolved_identifier];
               break;
 
+            case "Documentor":
+              localSchemaProperties[attribute.resolved_identifier] = {
+                type: "string",
+              };
+              localUISchemaElements.push({
+                type: "Control",
+                label: attribute.label,
+                scope: `#/properties/${attribute.resolved_identifier}`,
+                options: {
+                  reusejs: uiComponent,
+                  attributeSpec: attribute,
+                },
+              });
+
+              localFormData[attribute.resolved_identifier] =
+                resourceData[attribute.resolved_identifier];
+              break;
+
             default:
               break;
           }
@@ -387,7 +405,7 @@ function CreateOrEditForm({
           : `Create ${resourceSpec.label}`
       }
     >
-      <form action="#" method="POST" onSubmit={(e) => handleSubmit(e)}>
+      <div>
         <div className="border border-gray-300 dark:border-gray-800 sm:rounded-md p-1 max-w-full">
           <div className="max-w-full px-4 py-5 bg-white dark:bg-gray-900 sm:p-6">
             {ready && (
@@ -408,14 +426,17 @@ function CreateOrEditForm({
 
           <div className="flex items-center justify-end px-4 py-3 text-right bg-gray-50 dark:bg-gray-800 sm:px-6">
             <ButtonBase
-              type="submit"
+              type="button"
+              onClick={() => {
+                handleSubmit();
+              }}
               label={action === "update" ? "Update" : "Create"}
               disabled={formInstance.busy}
               busyText={"Processing.."}
             />
           </div>
         </div>
-      </form>
+      </div>
     </FormWrapper>
   );
 }
