@@ -1,6 +1,6 @@
 {
   "name": "@locospec/react",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "React Helpers for Locospec to generate UI",
   "main": "index.tsx",
   "scripts": {
@@ -26,7 +26,7 @@
     "@mui/material": "^5.10.3",
     "@mui/system": "^5.10.4",
     "@mui/x-date-pickers": "^5.0.0",
-    "@reusejs/documentor": "^0.0.15",
+    "@reusejs/documentor": "^0.0.16",
     "@reusejs/react": "^6.19.10",
     "@types/luxon": "^3.0.1",
     "ajv": "^8.11.0",

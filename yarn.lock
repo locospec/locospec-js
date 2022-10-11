@@ -1258,10 +1258,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@reusejs/documentor@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@reusejs/documentor/-/documentor-0.0.15.tgz#e5b07fe01d794af940b2640e581ab1d3ac4d9262"
-  integrity sha512-thfLuCSDv/25/w3k4SIHXzNxsm+iK64VQCRBJNQew1grYxFwxxNQumlPJszePWnPb1/oVhHlnsf5ANSP7AdTKw==
+"@reusejs/documentor@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@reusejs/documentor/-/documentor-0.0.16.tgz#97a97782ecb519b4aa9b672611049b49112113d9"
+  integrity sha512-39SUDC6Y/2wmoTyqyuZNUCwd6eeZYlNj/Qu/OFqqg4dOQ3NgB6V50/SlHAp7UgXgOsiFi5jdwGT1uGUg7V5QEQ==
   dependencies:
     "@excalidraw/excalidraw" "^0.11.0"
     "@lexical/clipboard" "^0.5.0"
@@ -1282,6 +1282,7 @@
     lexical "0.5.0"
     lodash-es "^4.17.21"
     use-child "^1.0.0"
+    use-debounce "^8.0.4"
     utility-types "^3.10.0"
     y-websocket ">=1.3.x"
     yjs ">=13.5.22"
@@ -6246,6 +6247,11 @@ use-child@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/use-child/-/use-child-1.0.0.tgz#048dae97164d6c89294c3a8647c2c95b3b7a4af4"
   integrity sha512-SJYget7tkpfzMJzcNXdErPyNlD02J7SrUjgx+cshbcjNdh1JMCqmh/q6LGWOT1ZQXuPINXG8KvliX+tkT3JNdQ==
+
+use-debounce@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-8.0.4.tgz#27e93b2f010bd0b8ad06e9fc7de891d9ee5d6b8e"
+  integrity sha512-fGqsYQzl8kLHF2QpQSgIwgOgJmnh6j5L6SIzQiHdLfwp3q1egUL3btq5Bg2SJysH6A0ILLgT2IqXZKoNJr0nFw==
 
 use-sync-external-store@1.2.0:
   version "1.2.0"
