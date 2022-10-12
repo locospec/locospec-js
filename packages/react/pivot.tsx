@@ -137,8 +137,9 @@ const Pivot = ({
               scope: `#/properties/${attributeSpec.resolved_identifier}`,
               options: {
                 reusejs: uiComponent,
-                mental: {
+                loco: {
                   resource: attributeSpec.relation.resource,
+                  prefix: routePrefix,
                 },
               },
             });

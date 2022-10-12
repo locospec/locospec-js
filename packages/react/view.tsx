@@ -26,40 +26,42 @@ const TablePreview = ({ items }: { items: any }) => {
       <div className="my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-50">
-                <tr>
-                  {Object.keys(items[0]).map((value, index) => {
-                    return (
-                      <th
-                        scope="col"
-                        className="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6 uppercase"
-                        key={index}
-                      >
-                        {value}
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {items.map((item, index) => (
-                  <tr key={index}>
-                    {Object.values(item).map((value: any, index) => {
+            {items && items.length > 0 && (
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead className="bg-gray-50">
+                  <tr>
+                    {Object.keys(items[0]).map((value, index) => {
                       return (
-                        <td
-                          className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                        <th
+                          scope="col"
+                          className="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6 uppercase"
                           key={index}
                         >
                           {value}
-                        </td>
+                        </th>
                       );
                     })}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody className="divide-y divide-gray-200 bg-white">
+                  {items.map((item, index) => (
+                    <tr key={index}>
+                      {Object.values(item).map((value: any, index) => {
+                        return (
+                          <td
+                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                            key={index}
+                          >
+                            {value}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
