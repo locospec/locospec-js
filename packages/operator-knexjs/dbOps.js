@@ -25,6 +25,39 @@ const addFilters = (knex, dataBuilder, filters) => {
         dataBuilder = dataBuilder.where(filter.column, "=", `${filter.value}`);
         break;
 
+      case "json_path_eq":
+        let json_path_eq_columnArray = filter.column.split(".");
+        let json_path_eq_json_col = json_path_eq_columnArray[0];
+        json_path_eq_columnArray[0] = "$";
+        let json_path_eq_json_path = json_path_eq_columnArray.join(".");
+        dataBuilder = dataBuilder.whereJsonPath(
+          json_path_eq_json_col,
+          json_path_eq_json_path,
+          "=",
+          `${filter.value}`
+        );
+        break;
+
+      case "json_path_like":
+        let json_path_like_columnArray = filter.column.split(".");
+        let json_path_like_json_col = json_path_like_columnArray[0];
+        json_path_like_columnArray[0] = "$";
+        let json_path_like_json_path = json_path_like_columnArray.join(".");
+        dataBuilder = dataBuilder
+          .whereJsonPath(
+            json_path_like_json_col,
+            json_path_like_json_path,
+            "LIKE",
+            `%${filter.value}%`
+          )
+          .orWhereJsonPath(
+            json_path_like_json_col,
+            json_path_like_json_path,
+            "LIKE",
+            `%${filter.value.toLowerCase()}%`
+          );
+        break;
+
       default:
         break;
     }
@@ -43,6 +76,8 @@ const dbOps = async (dbOps) => {
       for (let dbOpsCounter = 0; dbOpsCounter < dbOps.length; dbOpsCounter++) {
         const dbOp = dbOps[dbOpsCounter];
         dbOp["table"] = dbOp.resourceSpec.meta.table;
+        const deleted_at_column =
+          dbOp.resourceSpec.meta.deleted_at_column || "deleted_at";
         const resourceSpec = dbOp.resourceSpec;
 
         switch (dbOp.operation) {
@@ -101,7 +136,7 @@ const dbOps = async (dbOps) => {
             opResult = await trx(dbOp.table)
               .where(dbOp.where)
               .whereNot(dbOp.whereNot)
-              .whereNull("deleted_at")
+              .whereNull(deleted_at_column)
               .count({ count: "*" })
               .first();
             opResult = parseInt(opResult.count);
@@ -111,8 +146,8 @@ const dbOps = async (dbOps) => {
             // console.log("dbOp", dbOp);
 
             const filters = dbOp.filters;
-            let dataBuilder = trx(dbOp.table).whereNull("deleted_at");
-            // let totalBuilder = trx(dbOp.table).whereNull("deleted_at");
+            let dataBuilder = trx(dbOp.table).whereNull(deleted_at_column);
+            // let totalBuilder = trx(dbOp.table).whereNull(deleted_at_column);
             dataBuilder = addFilters(knex, dataBuilder, filters);
 
             const totalBuilder = dataBuilder.clone();
