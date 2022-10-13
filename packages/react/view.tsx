@@ -30,7 +30,7 @@ const TablePreview = ({ items }: { items: any }) => {
               <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-50">
                   <tr>
-                    {Object.keys(items[0]).map((value, index) => {
+                    {Object.keys(items[0]).map((value: any, index: any) => {
                       return (
                         <th
                           scope="col"
@@ -45,9 +45,9 @@ const TablePreview = ({ items }: { items: any }) => {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {items.map((item, index) => (
+                  {items.map((item: any, index: any) => (
                     <tr key={index}>
-                      {Object.values(item).map((value: any, index) => {
+                      {Object.values(item).map((value: any, index: any) => {
                         return (
                           <td
                             className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
