@@ -90,6 +90,13 @@ const getOperations = async (context) => {
         const attributeSpec = attributes.find((element) => {
           return element.identifier === hasManyViaPivotColumn;
         });
+
+        console.log("attributeSpec", attributeSpec.relation)
+
+        if(attributeSpec.relation.sync !=== undefined && attributeSpec.relation.sync === false){
+          continue;
+        }
+
         const resourcePayload = hasManyPayload[hasManyViaPivotColumn];
         let deleteWhere = { ...attributeSpec.relation.filter } || {};
         deleteWhere[attributeSpec.relation.foreignKey] =

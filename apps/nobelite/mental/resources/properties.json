@@ -272,9 +272,6 @@
       "operations": {
         "create": {
           "validate": [{ "type": "required" }]
-        },
-        "update": {
-          "validate": [{ "type": "required" }]
         }
       },
       "ui": {

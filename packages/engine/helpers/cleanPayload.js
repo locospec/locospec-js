@@ -162,11 +162,11 @@ const cleanPayload = async (context) => {
 
   // console.log("cleanPayload", payload);
 
-  payload = pickKeysFromObject(payload, [
-    ...directColumns,
-    ...belongsToOneColumns,
-    ...otherKeys,
-  ]);
+  const payloadKeys = [...directColumns, ...belongsToOneColumns, ...otherKeys];
+
+  // console.log("payloadKeys", payloadKeys);
+
+  payload = pickKeysFromObject(payload, payloadKeys);
 
   locoAction["payload"] = payload;
   locoAction["hasManyPayload"] = hasManyPayload;
