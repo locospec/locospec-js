@@ -1,6 +1,5 @@
 const { resolveByDot } = require("./utils");
 const { pickKeysFromObject } = require("./utils");
-const knex = requireKnex();
 
 const saveFacet = async (context) => {
   const { locoAction, resourceModels, locoConfig } = context;
