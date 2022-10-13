@@ -38,6 +38,52 @@ const addFilters = (knex, dataBuilder, filters) => {
         );
         break;
 
+      case "json_path_not_contains":
+        let json_path_not_contains_columnArray = filter.column.split(".");
+        let json_path_not_contains_json_col =
+          json_path_not_contains_columnArray[0];
+        json_path_not_contains_columnArray.shift();
+        let json_path_not_contains_json_path =
+          json_path_not_contains_columnArray.join(".");
+
+        var json_path_not_contains_tempObject = {};
+        var json_path_not_contains_container =
+          json_path_not_contains_tempObject;
+        json_path_not_contains_json_path.split(".").map((k, i, values) => {
+          json_path_not_contains_container = json_path_not_contains_container[
+            k
+          ] = i == values.length - 1 ? filter.value : {};
+        });
+
+        dataBuilder = dataBuilder.whereNot(
+          json_path_not_contains_json_col,
+          "@>",
+          JSON.stringify(json_path_not_contains_tempObject)
+        );
+
+        break;
+
+      case "json_path_contains":
+        let json_path_contains_columnArray = filter.column.split(".");
+        let json_path_contains_json_col = json_path_contains_columnArray[0];
+        json_path_contains_columnArray.shift();
+        let json_path_contains_json_path =
+          json_path_contains_columnArray.join(".");
+
+        var json_path_contains_tempObject = {};
+        var json_path_contains_container = json_path_contains_tempObject;
+        json_path_contains_json_path.split(".").map((k, i, values) => {
+          json_path_contains_container = json_path_contains_container[k] =
+            i == values.length - 1 ? filter.value : {};
+        });
+        dataBuilder = dataBuilder.where(
+          json_path_contains_json_col,
+          "@>",
+          JSON.stringify(json_path_contains_tempObject)
+        );
+
+        break;
+
       case "json_path_like":
         let json_path_like_columnArray = filter.column.split(".");
         let json_path_like_json_col = json_path_like_columnArray[0];
