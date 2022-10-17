@@ -1258,10 +1258,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@reusejs/documentor@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@reusejs/documentor/-/documentor-0.0.16.tgz#97a97782ecb519b4aa9b672611049b49112113d9"
-  integrity sha512-39SUDC6Y/2wmoTyqyuZNUCwd6eeZYlNj/Qu/OFqqg4dOQ3NgB6V50/SlHAp7UgXgOsiFi5jdwGT1uGUg7V5QEQ==
+"@reusejs/documentor@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@reusejs/documentor/-/documentor-0.0.17.tgz#1bb6cf3c1156045b6ef357facc2f295615ce7a99"
+  integrity sha512-Eer9ffxNHD4Rc3gtTA+2fGGrlnrrh/OfQquorZG3f+r4l3Ly+kKOZ1IxF2BwD2gLBlUJh8xl+Mh4GVTwzKAAeg==
   dependencies:
     "@excalidraw/excalidraw" "^0.11.0"
     "@lexical/clipboard" "^0.5.0"

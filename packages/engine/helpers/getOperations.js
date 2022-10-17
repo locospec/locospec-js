@@ -91,9 +91,10 @@ const getOperations = async (context) => {
           return element.identifier === hasManyViaPivotColumn;
         });
 
-        console.log("attributeSpec", attributeSpec.relation)
-
-        if(attributeSpec.relation.sync !=== undefined && attributeSpec.relation.sync === false){
+        if (
+          attributeSpec.relation.sync !== undefined &&
+          attributeSpec.relation.sync === false
+        ) {
           continue;
         }
 
