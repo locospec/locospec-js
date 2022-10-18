@@ -25,16 +25,17 @@ const addFilters = (knex, dataBuilder, filters) => {
         dataBuilder = dataBuilder.where(filter.column, "=", `${filter.value}`);
         break;
 
-      case "json_path_eq":
-        let json_path_eq_columnArray = filter.column.split(".");
-        let json_path_eq_json_col = json_path_eq_columnArray[0];
-        json_path_eq_columnArray[0] = "$";
-        let json_path_eq_json_path = json_path_eq_columnArray.join(".");
-        dataBuilder = dataBuilder.whereJsonPath(
-          json_path_eq_json_col,
-          json_path_eq_json_path,
-          "=",
-          `${filter.value}`
+      case "json_path_like":
+        let json_path_like_columnArray = filter.column.split(".");
+        let json_path_like_json_col = json_path_like_columnArray[0];
+        json_path_like_columnArray[0] = "$";
+        let json_path_like_json_path = json_path_like_columnArray.join(".");
+        dataBuilder = dataBuilder.where(
+          knex.raw(
+            `lower(jsonb_path_query_first("${json_path_like_json_col}", '${json_path_like_json_path}') #>> '{}')`
+          ),
+          "LIKE",
+          `%${filter.value.toLowerCase()}%`
         );
         break;
 
@@ -82,26 +83,6 @@ const addFilters = (knex, dataBuilder, filters) => {
           JSON.stringify(json_path_contains_tempObject)
         );
 
-        break;
-
-      case "json_path_like":
-        let json_path_like_columnArray = filter.column.split(".");
-        let json_path_like_json_col = json_path_like_columnArray[0];
-        json_path_like_columnArray[0] = "$";
-        let json_path_like_json_path = json_path_like_columnArray.join(".");
-        dataBuilder = dataBuilder
-          .whereJsonPath(
-            json_path_like_json_col,
-            json_path_like_json_path,
-            "LIKE",
-            `%${filter.value}%`
-          )
-          .orWhereJsonPath(
-            json_path_like_json_col,
-            json_path_like_json_path,
-            "LIKE",
-            `%${filter.value.toLowerCase()}%`
-          );
         break;
 
       default:
@@ -217,10 +198,14 @@ const dbOps = async (dbOps) => {
               dataBuilder = dataBuilder.offset(dbOp.offset);
             }
 
+            let queryPrinter = dataBuilder.clone();
+
             let builtResult = {};
             let dataResult = await dataBuilder;
             let totalResult = await totalBuilder.count({ count: "*" }).first();
             let total = parseInt(totalResult.count);
+
+            // console.log("queryPrinter", queryPrinter.toString());
 
             builtResult = {
               data: dataResult,

@@ -41,8 +41,10 @@ const runTransformation = async (context, valueFromSource, transformation) => {
       break;
 
     case "in":
+    case "json_path_contains":
+    case "json_path_like":
       let whereClause = {};
-      whereClause["op"] = "in";
+      whereClause["op"] = transformation.operation;
       whereClause["column"] = transformation.findByKey;
       whereClause["value"] = valueFromSource[transformation.findByValue];
 
