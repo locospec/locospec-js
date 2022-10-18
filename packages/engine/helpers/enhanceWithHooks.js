@@ -1,4 +1,15 @@
+function humanize(str, delim) {
+  var i,
+    frags = str.split(delim);
+  for (i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join("");
+}
+
 function capitalizeFirstLetter(string) {
+  string = humanize(string, "_");
+  string = humanize(string, "-");
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -17,6 +28,8 @@ const enhanceWithHooks = async (context, actionSequence) => {
       )}${capitalizeFirstLetter(locoAction.action)}${capitalizeFirstLetter(
         locoAction.resource
       )}`;
+
+      // console.log("hookName", hookName);
 
       if (requiredHooks[hookName]) {
         hooks.push(requiredHooks[hookName]);

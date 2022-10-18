@@ -46,7 +46,12 @@ import StaticSidebar from "./StaticSidebar";
 import TopNavBar from "./TopNavBar";
 
 const navigation = [
-  { name: "Topics", resource: "topics", icon: MenuAlt3Icon, current: true },
+  {
+    name: "Topics",
+    resource: "sources-of-topics",
+    icon: MenuAlt3Icon,
+    current: true,
+  },
   { name: "States", resource: "states", icon: MenuAlt3Icon, current: true },
   {
     name: "Districts",
