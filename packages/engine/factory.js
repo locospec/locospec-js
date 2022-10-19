@@ -75,7 +75,6 @@ const locoFactory = (function () {
       resolveUser = requireIfExists(
         locoConfig.resolveUserFnPath,
         async (locoRoute, frameworkData) => {
-          console.log("Call internal");
           return "*";
         }
       );
