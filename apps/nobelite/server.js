@@ -1,6 +1,6 @@
 const Config = require("./config")();
 const httpServer = requireHttpServer();
-const bootstrapMental = require("./mental/bootstrap");
+const bootstrapMental = require("./loco/bootstrap");
 
 const server = httpServer({
   bodyLimit: 104857600,

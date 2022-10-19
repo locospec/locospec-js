@@ -1,8 +1,8 @@
 const routes = ({ resourceModels }, locoConfig) => {
   const resources = Object.values(resourceModels);
   const apiEndpoints = [];
-  const mentalApiPrefix =
-    locoConfig.apiPrefix === undefined ? "/mental" : locoConfig.apiPrefix;
+  const locoApiPrefix =
+    locoConfig.apiPrefix === undefined ? "/loco" : locoConfig.apiPrefix;
 
   let crudPaths = [
     {
@@ -55,8 +55,7 @@ const routes = ({ resourceModels }, locoConfig) => {
         resource: resource.name,
         method: crudPath.method,
         path:
-          mentalApiPrefix +
-          crudPath.path.replace("$api_endpoint", resource.name),
+          locoApiPrefix + crudPath.path.replace("$api_endpoint", resource.name),
         action: crudPath.action,
       });
     }
