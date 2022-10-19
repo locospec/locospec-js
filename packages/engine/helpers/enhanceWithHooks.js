@@ -1,3 +1,5 @@
+const requireIfExists = require("./requireIfExists");
+
 function humanize(str, delim) {
   var i,
     frags = str.split(delim);
@@ -15,7 +17,7 @@ function capitalizeFirstLetter(string) {
 
 const enhanceWithHooks = async (context, actionSequence) => {
   const { locoAction, resourceModels, locoConfig } = context;
-  const requiredHooks = require(locoConfig.hooksPath);
+  const requiredHooks = requireIfExists(locoConfig.hooksPath);
   const lifeCycles = ["before", "after"];
   const methods = ["prepare", "authorize", "validate", "handle", "respond"];
 

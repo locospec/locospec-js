@@ -3,6 +3,7 @@ const path = require("path");
 const generateRoutes = require("./generate_routes");
 const executeAction = require("./actions");
 const deepAssign = require("./helpers/deepAssign");
+const requireIfExists = require("./helpers/requireIfExists");
 
 const locoFactory = (function () {
   "use strict";
@@ -64,14 +65,34 @@ const locoFactory = (function () {
         ...config,
       };
 
-      resolvePayload = require(locoConfig.resolvePayloadFnPath);
-      resolveUser = require(locoConfig.resolveUserFnPath);
+      resolvePayload = requireIfExists(
+        locoConfig.resolvePayloadFnPath,
+        async (locoRoute, frameworkData) => {
+          return frameworkData.req.body;
+        }
+      );
+
+      resolveUser = requireIfExists(
+        locoConfig.resolveUserFnPath,
+        async (locoRoute, frameworkData) => {
+          console.log("Call internal");
+          return "*";
+        }
+      );
 
       let resources = fs.readdirSync(locoConfig.resourcesPath);
-      let mixins = fs.readdirSync(locoConfig.mixinsPath);
+
+      let mixins = [];
+      try {
+        mixins = fs.readdirSync(locoConfig.mixinsPath);
+      } catch (error) {
+        mixins = [];
+      }
+
       resources = resources.filter(
         (e) => path.extname(e).toLowerCase() === ".json"
       );
+
       mixins = mixins.filter((e) => path.extname(e).toLowerCase() === ".json");
 
       resources.forEach((resource) => {

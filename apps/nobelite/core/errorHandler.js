@@ -21,7 +21,7 @@ module.exports = (err, req, res) => {
 
   if (process.env.DEBUG === "true") {
     console.log("err", err);
-    return res.status(500).send({ message: err.message });
+    return res.status(500).send({ message: err });
   } else {
     if (process.env.SENTRY_DSN !== "") {
       Sentry.captureException(err);

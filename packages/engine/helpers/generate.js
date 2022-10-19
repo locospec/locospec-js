@@ -1,5 +1,6 @@
 var uuid = require("uuid");
 const { resolveByDot } = require("./utils");
+const requireIfExists = require("./requireIfExists");
 
 const generateOTP = async (length = 6) => {
   var digits = "0123456789";
@@ -36,11 +37,15 @@ const generateAttribute = async (
       break;
 
     case "custom_generator":
-      value = await outsideGeneratorFunctions[generator["value"]](
-        resourceSpec,
-        identifier,
-        payload[generator["source"]]
-      );
+      if (outsideGeneratorFunctions[generator["value"]] !== undefined) {
+        value = await outsideGeneratorFunctions[generator["value"]](
+          resourceSpec,
+          identifier,
+          payload[generator["source"]]
+        );
+      } else {
+        throw `custom_generator ${generator["value"]} doesn't exist`;
+      }
       break;
 
     default:
@@ -55,7 +60,7 @@ const generate = async (context) => {
 
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
-  const outsideGeneratorFunctions = require(locoConfig.generatorsPath);
+  const outsideGeneratorFunctions = requireIfExists(locoConfig.generatorsPath);
   let payload = locoAction.payload;
   let action = locoAction.action;
 

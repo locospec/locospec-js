@@ -1,5 +1,6 @@
 const validator = require("./validator");
 const { resolveByDot } = require("./utils");
+const requireIfExists = require("./requireIfExists");
 
 const addToConstraints = (
   constraints,
@@ -139,9 +140,16 @@ const addToConstraints = (
     }
 
     if (validator.type === "custom_validator") {
-      validator["custom_validator"] =
-        outsideValidatorFunctions[validator.value];
-      constraints[attribute_identifier]["outside_function"] = validator;
+      if (outsideValidatorFunctions[validator.value] !== undefined) {
+        validator["custom_validator"] =
+          outsideValidatorFunctions[validator.value];
+        constraints[attribute_identifier]["outside_function"] = validator;
+      } else {
+        validator["custom_validator"] = () => {
+          return `^custom_validator ${validator.value} doesn't exist`;
+        };
+        constraints[attribute_identifier]["outside_function"] = validator;
+      }
     }
   }
 
@@ -152,7 +160,7 @@ const validate = async (context) => {
   const { locoAction, resourceModels, locoConfig } = context;
   const resourceSpec = resourceModels[locoAction.resource];
   const attributes = resourceSpec.attributes;
-  const outsideValidatorFunctions = require(locoConfig.validatorsPath);
+  const outsideValidatorFunctions = requireIfExists(locoConfig.validatorsPath);
 
   const attributesWithOperations = attributes.filter((a) => {
     return a.operations !== undefined;
