@@ -12,6 +12,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "admin:serve": "turbo run admin#dev",
+    "nobelite:dev": "ENVFILE=apps/nobelite/.env DEBUG=true npx nodemon apps/nobelite/server.js packages",
     "nobelite:serve": "turbo run nobelite#serve",
     "nobelite:start": "turbo run nobelite#start",
     "nobelite:db:migrate": "cd apps/nobelite && ENVFILE=.env knex migrate:latest",

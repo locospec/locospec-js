@@ -45,14 +45,30 @@ const locoFactory = (function () {
       return result;
     },
     init: (config) => {
-      console.log("init .......");
-      locoConfig = config;
+      locoConfig = {
+        ...{
+          resourcesPath: path.resolve(config.locoPath, `resources`),
+          mixinsPath: path.resolve(config.locoPath, `mixins`),
+          hooksPath: path.resolve(config.locoPath, `hooks/index.js`),
+          validatorsPath: path.resolve(config.locoPath, `validators/index.js`),
+          generatorsPath: path.resolve(config.locoPath, `generators/index.js`),
+          resolvePayloadFnPath: path.resolve(
+            config.locoPath,
+            `functions/resolvePayload.js`
+          ),
+          resolveUserFnPath: path.resolve(
+            config.locoPath,
+            `functions/resolveUser.js`
+          ),
+        },
+        ...config,
+      };
 
       resolvePayload = require(locoConfig.resolvePayloadFnPath);
       resolveUser = require(locoConfig.resolveUserFnPath);
 
-      let resources = fs.readdirSync(config.resourcesPath);
-      let mixins = fs.readdirSync(config.mixinsPath);
+      let resources = fs.readdirSync(locoConfig.resourcesPath);
+      let mixins = fs.readdirSync(locoConfig.mixinsPath);
       resources = resources.filter(
         (e) => path.extname(e).toLowerCase() === ".json"
       );
@@ -60,7 +76,7 @@ const locoFactory = (function () {
 
       resources.forEach((resource) => {
         const resourcePath = path.resolve(
-          `${config.resourcesPath}/${resource}`
+          `${locoConfig.resourcesPath}/${resource}`
         );
         let resourceData = JSON.parse(fs.readFileSync(resourcePath, "utf-8"));
         if (resourceData.name) {
@@ -68,7 +84,9 @@ const locoFactory = (function () {
             for (let index = 0; index < resourceData.mixins.length; index++) {
               let mixin = resourceData.mixins[index];
               if (mixins.includes(mixin)) {
-                const mixinPath = path.resolve(`${config.mixinsPath}/${mixin}`);
+                const mixinPath = path.resolve(
+                  `${locoConfig.mixinsPath}/${mixin}`
+                );
                 let mixinData = JSON.parse(fs.readFileSync(mixinPath, "utf-8"));
                 resourceData = deepAssign({})(resourceData, mixinData);
               }
