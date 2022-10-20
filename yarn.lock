@@ -1287,10 +1287,10 @@
     y-websocket ">=1.3.x"
     yjs ">=13.5.22"
 
-"@reusejs/react@^6.19.10":
-  version "6.19.11"
-  resolved "https://registry.yarnpkg.com/@reusejs/react/-/react-6.19.11.tgz#166293797aa47e15456ab25cc23ddde2c8262353"
-  integrity sha512-2ueF6108AEIDrecKnt9Ps6mxQg1+5GMrcEPXe/o+SLUrjDtlqLgc5EQuSCyk3v+s3hxpzwvFc0uU2Or5h9sIug==
+"@reusejs/react@^6.19.19":
+  version "6.19.19"
+  resolved "https://registry.yarnpkg.com/@reusejs/react/-/react-6.19.19.tgz#62df7d4a3a48d83e1ceb5f9195fa465616a5a9f7"
+  integrity sha512-CFP3nRM1X5nX5bCZV8cBT9fudoz3XgUBNeXaOPtVJ+yhjGge7dRzSXRq2DcBSwAiK9v8ZaRUpzhWxHtQSNITLw==
   dependencies:
     "@headlessui/react" "^1.6.6"
     dayzed "^3.2.3"
