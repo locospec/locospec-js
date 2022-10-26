@@ -1,0 +1,488 @@
+{
+  "node": "root",
+  "child": [
+    {
+      "node": "element",
+      "tag": "div",
+      "attr": {
+        "class": [
+          "relative",
+          "flex",
+          "min-h-screen",
+          "flex-col",
+          "justify-center",
+          "overflow-hidden",
+          "bg-gray-50",
+          "py-6",
+          "sm:py-12"
+        ]
+      },
+      "child": [
+        { "node": "text", "text": "\n  " },
+        {
+          "node": "element",
+          "tag": "lazy-img",
+          "attr": {
+            "src": "/img/beams.jpg",
+            "alt": "",
+            "class": [
+              "absolute",
+              "top-1/2",
+              "left-1/2",
+              "max-w-none",
+              "-translate-x-1/2",
+              "-translate-y-1/2"
+            ],
+            "width": "1308"
+          }
+        },
+        { "node": "text", "text": "\n  " },
+        {
+          "node": "element",
+          "tag": "div",
+          "attr": {
+            "class": [
+              "absolute",
+              "inset-0",
+              "bg-[url(/img/grid.svg)]",
+              "bg-center",
+              "[mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
+            ]
+          }
+        },
+        { "node": "text", "text": "\n  " },
+        {
+          "node": "element",
+          "tag": "div",
+          "attr": {
+            "class": [
+              "relative",
+              "bg-white",
+              "px-6",
+              "pt-10",
+              "pb-8",
+              "shadow-xl",
+              "ring-1",
+              "ring-gray-900/5",
+              "sm:mx-auto",
+              "sm:max-w-lg",
+              "sm:rounded-lg",
+              "sm:px-10"
+            ]
+          },
+          "child": [
+            { "node": "text", "text": "\n    " },
+            {
+              "node": "element",
+              "tag": "div",
+              "attr": { "class": ["mx-auto", "max-w-md"] },
+              "child": [
+                { "node": "text", "text": "\n      " },
+                {
+                  "node": "element",
+                  "tag": "img",
+                  "attr": {
+                    "src": "/img/logo.svg",
+                    "class": "h-6",
+                    "alt": ["Tailwind", "Play"]
+                  }
+                },
+                { "node": "text", "text": "\n      " },
+                {
+                  "node": "element",
+                  "tag": "div",
+                  "attr": { "class": ["divide-y", "divide-gray-300/50"] },
+                  "child": [
+                    { "node": "text", "text": "\n        " },
+                    {
+                      "node": "element",
+                      "tag": "div",
+                      "attr": {
+                        "class": [
+                          "space-y-6",
+                          "py-8",
+                          "text-base",
+                          "leading-7",
+                          "text-gray-600"
+                        ]
+                      },
+                      "child": [
+                        { "node": "text", "text": "\n          " },
+                        {
+                          "node": "element",
+                          "tag": "p",
+                          "child": [
+                            {
+                              "node": "text",
+                              "text": "\n            An advanced online playground for Tailwind CSS, including support\n            for things like:\n          "
+                            }
+                          ]
+                        },
+                        { "node": "text", "text": "\n          " },
+                        {
+                          "node": "element",
+                          "tag": "ul",
+                          "attr": { "class": "space-y-4" },
+                          "child": [
+                            { "node": "text", "text": "\n            " },
+                            {
+                              "node": "element",
+                              "tag": "li",
+                              "attr": { "class": ["flex", "items-center"] },
+                              "child": [
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "svg",
+                                  "attr": {
+                                    "class": [
+                                      "h-6",
+                                      "w-6",
+                                      "flex-none",
+                                      "fill-sky-100",
+                                      "stroke-sky-500",
+                                      "stroke-2"
+                                    ],
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round"
+                                  },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "circle",
+                                      "attr": {
+                                        "cx": "12",
+                                        "cy": "12",
+                                        "r": "11"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "path",
+                                      "attr": {
+                                        "d": [
+                                          "m8",
+                                          "13",
+                                          "2.165",
+                                          "2.165a1",
+                                          "1",
+                                          "0",
+                                          "0",
+                                          "0",
+                                          "1.521-.126L16",
+                                          "9"
+                                        ],
+                                        "fill": "none"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n              "
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "p",
+                                  "attr": { "class": "ml-4" },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "\n                Customizing your\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "code",
+                                      "attr": {
+                                        "class": [
+                                          "text-sm",
+                                          "font-bold",
+                                          "text-gray-900"
+                                        ]
+                                      },
+                                      "child": [
+                                        {
+                                          "node": "text",
+                                          "text": "tailwind.config.js"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n                file\n              "
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n            " }
+                              ]
+                            },
+                            { "node": "text", "text": "\n            " },
+                            {
+                              "node": "element",
+                              "tag": "li",
+                              "attr": { "class": ["flex", "items-center"] },
+                              "child": [
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "svg",
+                                  "attr": {
+                                    "class": [
+                                      "h-6",
+                                      "w-6",
+                                      "flex-none",
+                                      "fill-sky-100",
+                                      "stroke-sky-500",
+                                      "stroke-2"
+                                    ],
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round"
+                                  },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "circle",
+                                      "attr": {
+                                        "cx": "12",
+                                        "cy": "12",
+                                        "r": "11"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "path",
+                                      "attr": {
+                                        "d": [
+                                          "m8",
+                                          "13",
+                                          "2.165",
+                                          "2.165a1",
+                                          "1",
+                                          "0",
+                                          "0",
+                                          "0",
+                                          "1.521-.126L16",
+                                          "9"
+                                        ],
+                                        "fill": "none"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n              "
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "p",
+                                  "attr": { "class": "ml-4" },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "\n                Extracting classes with\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "code",
+                                      "attr": {
+                                        "class": [
+                                          "text-sm",
+                                          "font-bold",
+                                          "text-gray-900"
+                                        ]
+                                      },
+                                      "child": [
+                                        { "node": "text", "text": "@apply" }
+                                      ]
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n              "
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n            " }
+                              ]
+                            },
+                            { "node": "text", "text": "\n            " },
+                            {
+                              "node": "element",
+                              "tag": "li",
+                              "attr": { "class": ["flex", "items-center"] },
+                              "child": [
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "svg",
+                                  "attr": {
+                                    "class": [
+                                      "h-6",
+                                      "w-6",
+                                      "flex-none",
+                                      "fill-sky-100",
+                                      "stroke-sky-500",
+                                      "stroke-2"
+                                    ],
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round"
+                                  },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "circle",
+                                      "attr": {
+                                        "cx": "12",
+                                        "cy": "12",
+                                        "r": "11"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n                "
+                                    },
+                                    {
+                                      "node": "element",
+                                      "tag": "path",
+                                      "attr": {
+                                        "d": [
+                                          "m8",
+                                          "13",
+                                          "2.165",
+                                          "2.165a1",
+                                          "1",
+                                          "0",
+                                          "0",
+                                          "0",
+                                          "1.521-.126L16",
+                                          "9"
+                                        ],
+                                        "fill": "none"
+                                      }
+                                    },
+                                    {
+                                      "node": "text",
+                                      "text": "\n              "
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n              " },
+                                {
+                                  "node": "element",
+                                  "tag": "p",
+                                  "attr": { "class": "ml-4" },
+                                  "child": [
+                                    {
+                                      "node": "text",
+                                      "text": "Code completion with instant preview"
+                                    }
+                                  ]
+                                },
+                                { "node": "text", "text": "\n            " }
+                              ]
+                            },
+                            { "node": "text", "text": "\n          " }
+                          ]
+                        },
+                        { "node": "text", "text": "\n          " },
+                        {
+                          "node": "element",
+                          "tag": "p",
+                          "child": [
+                            {
+                              "node": "text",
+                              "text": "\n            Perfect for learning how the framework works, prototyping a new\n            idea, or creating a demo to share online.\n          "
+                            }
+                          ]
+                        },
+                        { "node": "text", "text": "\n        " }
+                      ]
+                    },
+                    { "node": "text", "text": "\n        " },
+                    {
+                      "node": "element",
+                      "tag": "div",
+                      "attr": {
+                        "class": [
+                          "pt-8",
+                          "text-base",
+                          "font-semibold",
+                          "leading-7"
+                        ]
+                      },
+                      "child": [
+                        { "node": "text", "text": "\n          " },
+                        {
+                          "node": "element",
+                          "tag": "p",
+                          "attr": { "class": "text-gray-900" },
+                          "child": [
+                            {
+                              "node": "text",
+                              "text": "Want to dig deeper into Tailwind?"
+                            }
+                          ]
+                        },
+                        { "node": "text", "text": "\n          " },
+                        {
+                          "node": "element",
+                          "tag": "p",
+                          "child": [
+                            { "node": "text", "text": "\n            " },
+                            {
+                              "node": "element",
+                              "tag": "a",
+                              "attr": {
+                                "href": "https://tailwindcss.com/docs",
+                                "class": ["text-sky-500", "hover:text-sky-600"]
+                              },
+                              "child": [
+                                {
+                                  "node": "text",
+                                  "text": "Read the docs &rarr;"
+                                }
+                              ]
+                            },
+                            { "node": "text", "text": "\n          " }
+                          ]
+                        },
+                        { "node": "text", "text": "\n        " }
+                      ]
+                    },
+                    { "node": "text", "text": "\n      " }
+                  ]
+                },
+                { "node": "text", "text": "\n    " }
+              ]
+            },
+            { "node": "text", "text": "\n  " }
+          ]
+        },
+        { "node": "text", "text": "\n" }
+      ]
+    },
+    { "node": "text", "text": "\n" }
+  ]
+}

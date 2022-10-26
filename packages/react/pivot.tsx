@@ -13,7 +13,7 @@ import { callLoco, getByUuid } from "./helpers/callLoco";
 const NextJSLink = (props: any) => {
   let { href, children, ...rest } = props;
   return (
-    <Link href={href}>
+    <Link href={href} legacyBehavior>
       <a {...rest}>{children}</a>
     </Link>
   );

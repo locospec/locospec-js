@@ -3478,6 +3478,11 @@ html-escaper@^2.0.0:
   resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
   integrity sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==
 
+html2json@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/html2json/-/html2json-1.0.2.tgz#c9d6d202fa65402386c202b345cf51bce80ed1ef"
+  integrity sha512-tCdVt82U+/D1GCXFIoN5VfCzx767065EZJ5B8nStQUGSXU9PQ4L/0kFvF2of3Qsoe9HGaJni+lxOkqakfw0zpA==
+
 http-proxy-agent@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/http-proxy-agent/-/http-proxy-agent-4.0.1.tgz#8a8c8ef7f5932ccf953c296ca8291b95aa74aa3a"
