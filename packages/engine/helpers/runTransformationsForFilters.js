@@ -38,7 +38,7 @@ const runTransformationsForFilters = async (context) => {
           );
         }
 
-        console.log("resourceSpecFilter", resourceSpecFilter);
+        // console.log("resourceSpecFilter", resourceSpecFilter);
 
         let whereClause = {};
         whereClause["op"] = "in";

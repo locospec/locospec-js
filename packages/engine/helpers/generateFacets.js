@@ -40,6 +40,12 @@ const generateFacets = async (context) => {
       if (resource !== undefined) {
         const resourceSpec = resourceModels[resource];
 
+        let sortBy = resourceSpec.sortBy || [];
+
+        sortBy = sortBy.map((s) => {
+          return { column: s.attribute, order: s.order, nulls: "last" };
+        });
+
         let whereClause = {};
         whereClause["op"] = "in";
         whereClause["column"] = valueKey;
@@ -54,6 +60,7 @@ const generateFacets = async (context) => {
           operation: "select",
           filters: [whereClause],
           selectColumns: "*",
+          sortBy,
         });
 
         let generatedData = await locoConfig.operator.dbOps(operations);
