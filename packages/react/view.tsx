@@ -98,12 +98,20 @@ const View = ({
 }) => {
   const [readOne, setReadOne] = useState<any>({});
   const [hasManyAttributes, setHasManyAttributes] = useState<any>([]);
+  const [headerLinks, setHeaderLinks] = useState<any>([]);
   const [hasManyViaPivotAttributes, setHasManyViaPivotAttributes] =
     useState<any>([]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    console.log("view mounted");
+    // console.log(
+    //   "view mounted",
+    //   resolveByDot("ui.detail.header.links", resourceSpec)
+    // );
+
+    if (resolveByDot("ui.detail.header.links", resourceSpec) !== undefined) {
+      setHeaderLinks(resolveByDot("ui.detail.header.links", resourceSpec));
+    }
 
     const attributes = resourceSpec.attributes;
 
@@ -143,6 +151,24 @@ const View = ({
 
     return (
       <div className="flex space-x-2">
+        {headerLinks.length > 0 &&
+          headerLinks.map((link: any, index: any) => {
+            return (
+              <ButtonBase
+                key={`header-link-${index}`}
+                type="button"
+                label={link.label}
+                onClick={() => {
+                  router.push(
+                    `/${link.url}?${new URLSearchParams({
+                      primary_identifier: primaryIdentifier,
+                    }).toString()}`
+                  );
+                }}
+              />
+            );
+          })}
+
         {hasManyAttributes.length > 0 &&
           hasManyAttributes
             .filter((attribute: any) => {

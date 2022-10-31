@@ -7,6 +7,18 @@
     "table": "topics"
   },
   "mixins": ["datetime-in-resource.json"],
+  "ui": {
+    "detail": {
+      "header": {
+        "links": [
+          {
+            "label": "Bankers",
+            "url": "/bankers-for-branch"
+          }
+        ]
+      }
+    }
+  },
   "attributes": {
     "uuid": {
       "label": "UUID",
