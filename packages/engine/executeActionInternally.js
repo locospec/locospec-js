@@ -8,6 +8,7 @@ const executeActionInternally = async (mentalRoute, payload) => {
     locoAction: {
       resource: mentalRoute.resource,
       action: mentalRoute.action,
+      stopAfterPhase: payload["stop_after_phase"],
       permissions: "*",
       payload,
     },

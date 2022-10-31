@@ -20,10 +20,21 @@ const enhanceWithHooks = async (context, actionSequence) => {
   const requiredHooks = requireIfExists(locoConfig.hooksPath);
   const lifeCycles = ["before", "after"];
   const methods = ["prepare", "authorize", "validate", "handle", "respond"];
+  let excludeMethods = [];
+
+  if (locoAction["stopAfterPhase"] !== undefined) {
+    if (locoAction["stopAfterPhase"] === "validate") {
+      excludeMethods = ["handle", "respond"];
+    }
+  }
 
   let hooks = [];
 
   methods.forEach((method) => {
+    if (excludeMethods.includes(method)) {
+      return;
+    }
+
     lifeCycles.forEach((lifeCycle) => {
       const hookName = `${lifeCycle}${capitalizeFirstLetter(
         method
