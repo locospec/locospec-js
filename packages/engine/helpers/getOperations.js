@@ -143,7 +143,8 @@ const getOperations = async (context) => {
   if (action === "read") {
     // console.log("resourceSpec", resourceSpec.sortBy);
 
-    let limitBy = locoAction.payload.limitBy || { page: 1, per_page: 10 };
+    let limitBy = locoAction.payload.limitBy ||
+      resourceSpec.limitBy || { page: 1, per_page: 10 };
     let filterBy = locoAction.payload.filterBy || [];
     let sortBy = locoAction.payload.sortBy || resourceSpec.sortBy || [];
     const table = resourceSpec.meta.table;
