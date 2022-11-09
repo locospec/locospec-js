@@ -39,6 +39,22 @@ const addFilters = (knex, dataBuilder, filters) => {
         );
         break;
 
+      case "json_path_comp":
+        let json_path_comp_columnArray = filter.column.split(".");
+        let json_path_comp_json_col = json_path_comp_columnArray[0];
+        json_path_comp_columnArray[0] = "$";
+        let json_path_comp_json_path = json_path_comp_columnArray.join(".");
+
+        dataBuilder = dataBuilder.where(
+          knex.raw(
+            `lower(jsonb_path_query_first("${json_path_comp_json_col}", '${json_path_comp_json_path}') #>> '{}')`
+          ),
+          filter.comparator,
+          filter.value
+        );
+
+        break;
+
       case "json_path_not_contains":
         let json_path_not_contains_columnArray = filter.column.split(".");
         let json_path_not_contains_json_col =

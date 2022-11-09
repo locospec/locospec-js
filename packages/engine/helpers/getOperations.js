@@ -165,6 +165,7 @@ const getOperations = async (context) => {
           column: f.attribute.toLowerCase(),
           op: f.op,
           value: f.value,
+          comparator: f.comparator,
         };
       });
 
