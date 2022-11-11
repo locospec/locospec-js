@@ -80,32 +80,37 @@ const addToConstraints = (
       //   validator.excludeAttributes = [...new Set(validator.excludeAttributes)];
       // }
 
-      const includeAttributes = validator.includeAttributes;
-      const excludeAttributes = validator.excludeAttributes;
+      if (
+        payload[attribute_identifier] !== undefined &&
+        payload[attribute_identifier] !== ""
+      ) {
+        const includeAttributes = validator.includeAttributes;
+        const excludeAttributes = validator.excludeAttributes;
 
-      where[attribute_identifier] = payload[attribute_identifier];
+        where[attribute_identifier] = payload[attribute_identifier];
 
-      for (let index = 0; index < includeAttributes.length; index++) {
-        const includeAttribute = includeAttributes[index];
-        if (payload[includeAttribute]) {
-          where[includeAttribute] = payload[includeAttribute];
+        for (let index = 0; index < includeAttributes.length; index++) {
+          const includeAttribute = includeAttributes[index];
+          if (payload[includeAttribute]) {
+            where[includeAttribute] = payload[includeAttribute];
+          }
         }
-      }
 
-      for (let index = 0; index < excludeAttributes.length; index++) {
-        const excludeAttribute = excludeAttributes[index];
-        if (payload[excludeAttribute]) {
-          whereNot[excludeAttribute] = payload[excludeAttribute];
+        for (let index = 0; index < excludeAttributes.length; index++) {
+          const excludeAttribute = excludeAttributes[index];
+          if (payload[excludeAttribute]) {
+            whereNot[excludeAttribute] = payload[excludeAttribute];
+          }
         }
-      }
 
-      constraints[attribute_identifier]["unique"] = {
-        message: `${attribute_identifier} should be unique.`,
-        context: context,
-        table: validator.table,
-        where: where,
-        whereNot: whereNot,
-      };
+        constraints[attribute_identifier]["unique"] = {
+          message: `${attribute_identifier} should be unique.`,
+          context: context,
+          table: validator.table,
+          where: where,
+          whereNot: whereNot,
+        };
+      }
     }
 
     if (validator.type === "exists") {
