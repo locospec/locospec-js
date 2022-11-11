@@ -84,10 +84,11 @@ const addToConstraints = (
         payload[attribute_identifier] !== undefined &&
         payload[attribute_identifier] !== ""
       ) {
-        const includeAttributes = validator.includeAttributes;
-        const excludeAttributes = validator.excludeAttributes;
+        const includeAttributes = validator.includeAttributes || [];
+        const excludeAttributes = validator.excludeAttributes || [];
 
-        where[attribute_identifier] = payload[attribute_identifier];
+        where[validator.column || attribute_identifier] =
+          payload[attribute_identifier];
 
         for (let index = 0; index < includeAttributes.length; index++) {
           const includeAttribute = includeAttributes[index];
@@ -114,34 +115,39 @@ const addToConstraints = (
     }
 
     if (validator.type === "exists") {
-      let where = {};
-      let whereNot = {};
-      const includeAttributes = validator.includeAttributes || [];
-      const excludeAttributes = validator.excludeAttributes || [];
-      where[validator.column || attribute_identifier] =
-        payload[attribute_identifier];
+      if (
+        payload[attribute_identifier] !== undefined &&
+        payload[attribute_identifier] !== ""
+      ) {
+        let where = {};
+        let whereNot = {};
+        const includeAttributes = validator.includeAttributes || [];
+        const excludeAttributes = validator.excludeAttributes || [];
+        where[validator.column || attribute_identifier] =
+          payload[attribute_identifier];
 
-      for (let index = 0; index < includeAttributes.length; index++) {
-        const includeAttribute = includeAttributes[index];
-        if (payload[includeAttribute]) {
-          where[includeAttribute] = payload[includeAttribute];
+        for (let index = 0; index < includeAttributes.length; index++) {
+          const includeAttribute = includeAttributes[index];
+          if (payload[includeAttribute]) {
+            where[includeAttribute] = payload[includeAttribute];
+          }
         }
-      }
 
-      for (let index = 0; index < excludeAttributes.length; index++) {
-        const excludeAttribute = excludeAttributes[index];
-        if (payload[excludeAttribute]) {
-          whereNot[excludeAttribute] = payload[excludeAttribute];
+        for (let index = 0; index < excludeAttributes.length; index++) {
+          const excludeAttribute = excludeAttributes[index];
+          if (payload[excludeAttribute]) {
+            whereNot[excludeAttribute] = payload[excludeAttribute];
+          }
         }
-      }
 
-      constraints[attribute_identifier]["exists"] = {
-        message: `${attribute_identifier} should exist.`,
-        context: context,
-        table: validator.table,
-        where: where,
-        whereNot: whereNot,
-      };
+        constraints[attribute_identifier]["exists"] = {
+          message: `${attribute_identifier} should exist.`,
+          context: context,
+          table: validator.table,
+          where: where,
+          whereNot: whereNot,
+        };
+      }
     }
 
     if (validator.type === "custom_validator") {
