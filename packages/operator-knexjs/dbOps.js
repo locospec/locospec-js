@@ -221,7 +221,7 @@ const dbOps = async (dbOps) => {
             let totalResult = await totalBuilder.count({ count: "*" }).first();
             let total = parseInt(totalResult.count);
 
-            // console.log("queryPrinter", queryPrinter.toString());
+            console.log("queryPrinter", queryPrinter.toString());
 
             builtResult = {
               data: dataResult,
@@ -231,6 +231,9 @@ const dbOps = async (dbOps) => {
                 page: dbOp.page,
                 per_page: dbOp.limit,
                 total_page: Math.ceil(total / dbOp.limit),
+              },
+              debug: {
+                queryPrinter: queryPrinter.toString(),
               },
             };
 
