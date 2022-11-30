@@ -1,4 +1,4 @@
-const { pickKeysFromObject } = require("./utils");
+const { pickKeysFromObject, resolveByDot } = require("./utils");
 
 const runTransformation = async (context, valueFromSource, transformation) => {
   const { locoAction, resourceModels, locoConfig } = context;
@@ -15,6 +15,13 @@ const runTransformation = async (context, valueFromSource, transformation) => {
   switch (transformation.operation) {
     case "alias":
       transformedValue = transformedValue[transformation.findByKey];
+      break;
+
+    case "extract_from_json":
+      transformedValue = resolveByDot(
+        transformation.findByKey,
+        transformedValue
+      );
       break;
 
     case "find":

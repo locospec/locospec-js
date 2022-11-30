@@ -1,6 +1,6 @@
 {
   "name": "@locospec/engine",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "NodeJS Engine Implementation of Locospec",
   "main": "src/index.js",
   "scripts": {
