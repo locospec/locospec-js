@@ -133,14 +133,22 @@ const List = ({
           column["identifier"] = attribute.identifier;
 
           column["resolver"] = (d: any) => {
-            return (
-              <div className="text-sm text-gray-900 dark:text-white">
-                {resolveByDot(
-                  `${attribute.ui.list.displayKey}`,
-                  d[attribute.identifier]
-                )}
-              </div>
-            );
+            if (attribute.ui.list.displayKey !== undefined) {
+              return (
+                <div className="text-sm text-gray-900 dark:text-white">
+                  {resolveByDot(
+                    `${attribute.ui.list.displayKey}`,
+                    d[attribute.identifier]
+                  )}
+                </div>
+              );
+            } else {
+              return (
+                <div className="text-sm text-gray-900 dark:text-white">
+                  {d[attribute.identifier]}
+                </div>
+              );
+            }
           };
           return column;
         } else {
