@@ -61,6 +61,7 @@ const getOperations = async (context) => {
         operation: "soft_delete",
         payload: localPayload,
         filters: filters,
+        where: deleteWhere,
       });
     }
   }

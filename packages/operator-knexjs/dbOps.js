@@ -138,12 +138,12 @@ const dbOps = async (dbOps) => {
             break;
 
           case "soft_delete":
-            console.log(
-              "soft_delete ---",
-              dbOp.table,
-              dbOp.filters,
-              dbOp.payload
-            );
+            // console.log(
+            //   "soft_delete ---",
+            //   dbOp.table,
+            //   dbOp.filters,
+            //   dbOp.payload
+            // );
 
             let softDeleteDataBuilder = trx(dbOp.table);
 
@@ -153,18 +153,36 @@ const dbOps = async (dbOps) => {
               dbOp.filters
             );
 
-            opResult = await softDeleteDataBuilder
+            softDeleteDataBuilder = softDeleteDataBuilder
+              .where(dbOp.where)
               .update(dbOp.payload)
               .returning("*");
 
+            let queryPrinterSoftDelete = softDeleteDataBuilder.clone();
+
+            // console.log(
+            //   "queryPrinterSoftDelete",
+            //   queryPrinterSoftDelete.toString()
+            // );
+
+            opResult = await softDeleteDataBuilder;
+
             return {
               data: opResult,
+              debug: {
+                queryPrinter: queryPrinterSoftDelete.toString(),
+              },
             };
 
             break;
 
           case "delete":
             opResult = await trx(dbOp.table).where(dbOp.where).delete();
+
+            return {
+              data: opResult,
+              message: "Deleted successfully",
+            };
 
             break;
 
