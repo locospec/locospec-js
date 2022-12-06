@@ -1,6 +1,6 @@
 {
   "name": "@locospec/react",
-  "version": "0.0.25",
+  "version": "0.0.28",
   "description": "React Helpers for Locospec to generate UI",
   "main": "index.tsx",
   "scripts": {

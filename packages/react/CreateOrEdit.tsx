@@ -159,6 +159,16 @@ function CreateOrEditForm({
 
           switch (arrayAttribute.uiComponent) {
             case "TextInputBase":
+              arraySchemaProperties[arrayAttribute.resolved_identifier] = {
+                type: "string",
+              };
+              break;
+
+            case "MaterialUIDefault":
+              arraySchemaProperties[arrayAttribute.resolved_identifier] =
+                arrayAttribute.schemaObject;
+              break;
+
             default:
               arraySchemaProperties[arrayAttribute.resolved_identifier] = {
                 type: "string",
@@ -438,6 +448,26 @@ function CreateOrEditForm({
 
             localFormData[attribute.resolved_identifier] =
               resourceData[attribute.resolved_identifier];
+            break;
+
+          case "MaterialUIDefault":
+            const defaultSchemaObject = resolveByDot(
+              `ui.${action}.schemaObject`,
+              attribute
+            );
+
+            localSchemaProperties[attribute.resolved_identifier] =
+              defaultSchemaObject;
+
+            localUISchemaElements.push({
+              type: "Control",
+              label: attribute.label,
+              scope: `#/properties/${attribute.resolved_identifier}`,
+            });
+
+            localFormData[attribute.resolved_identifier] =
+              resourceData[attribute.resolved_identifier];
+
             break;
 
           default:

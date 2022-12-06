@@ -8,6 +8,44 @@
   },
   "mixins": ["datetime-in-resource.json"],
   "attributes": {
+    "role": {
+      "label": "Role",
+      "operations": {
+        "*": {},
+        "create,update": {
+          "validate": [{ "type": "required" }]
+        },
+        "create": {
+          "validate": []
+        },
+        "update": {
+          "validate": []
+        }
+      },
+      "ui": {
+        "list": {
+          "display": true,
+          "filterBy": "like"
+        },
+        "detail": {
+          "display": true
+        },
+        "create": {
+          "component": "MaterialUIDefault",
+          "schemaObject": {
+            "type": "string",
+            "enum": ["foo", "bar"]
+          }
+        },
+        "update": {
+          "component": "MaterialUIDefault",
+          "schemaObject": {
+            "type": "string",
+            "enum": ["foo", "bar"]
+          }
+        }
+      }
+    },
     "uuid": {
       "label": "UUID",
       "operations": {
@@ -148,6 +186,14 @@
             {
               "resolved_identifier": "link",
               "uiComponent": "TextInputBase"
+            },
+            {
+              "resolved_identifier": "role",
+              "uiComponent": "MaterialUIDefault",
+              "schemaObject": {
+                "type": "string",
+                "enum": ["marketing_user", "cmi_user"]
+              }
             }
           ]
         },
@@ -165,6 +211,14 @@
             {
               "resolved_identifier": "link",
               "uiComponent": "TextInputBase"
+            },
+            {
+              "resolved_identifier": "role",
+              "uiComponent": "MaterialUIDefault",
+              "schemaObject": {
+                "type": "string",
+                "enum": ["marketing_user", "cmi_user"]
+              }
             }
           ]
         }

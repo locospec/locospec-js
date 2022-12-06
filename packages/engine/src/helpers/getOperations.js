@@ -51,6 +51,7 @@ const getOperations = async (context) => {
         resourceSpec: resourceSpec,
         operation: "delete",
         where: deleteWhere,
+        filters: filters,
       });
     } else {
       console.log("filters", filters);

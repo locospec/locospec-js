@@ -177,11 +177,25 @@ const dbOps = async (dbOps) => {
             break;
 
           case "delete":
-            opResult = await trx(dbOp.table).where(dbOp.where).delete();
+            let deleteDataBuilder = trx(dbOp.table);
+
+            deleteDataBuilder = addFilters(
+              knex,
+              deleteDataBuilder,
+              dbOp.filters
+            );
+
+            deleteDataBuilder = deleteDataBuilder.where(dbOp.where).delete();
+
+            let queryPrinterDelete = deleteDataBuilder.clone();
+
+            opResult = await deleteDataBuilder;
 
             return {
               data: opResult,
-              message: "Deleted successfully",
+              debug: {
+                queryPrinter: queryPrinterDelete.toString(),
+              },
             };
 
             break;
