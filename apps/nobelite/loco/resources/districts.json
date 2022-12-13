@@ -161,9 +161,8 @@
       "operation": "in",
       "transformations": [
         {
-          "operation": "in",
-          "resource": "states",
-          "findByKey": "slug",
+          "operation": "custom_query_function",
+          "function": "filterProfileByUserSubType",
           "findByValue": "state",
           "extract": "uuid"
         }
