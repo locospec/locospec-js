@@ -6,6 +6,7 @@ const rawQuery = (query) => {
 };
 
 module.exports = {
+  knex,
   dbOps,
   rawQuery,
 };
