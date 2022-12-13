@@ -53,6 +53,7 @@ const locoFactory = (function () {
           hooksPath: path.resolve(config.locoPath, `hooks/index.js`),
           validatorsPath: path.resolve(config.locoPath, `validators/index.js`),
           generatorsPath: path.resolve(config.locoPath, `generators/index.js`),
+          queriesPath: path.resolve(config.locoPath, `queries/index.js`),
           resolvePayloadFnPath: path.resolve(
             config.locoPath,
             `functions/resolvePayload.js`

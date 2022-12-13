@@ -1,4 +1,5 @@
 const { pickKeysFromObject, resolveByDot } = require("./utils");
+const requireIfExists = require("./requireIfExists");
 
 const runTransformation = async (context, valueFromSource, transformation) => {
   const { locoAction, resourceModels, locoConfig } = context;
@@ -72,6 +73,23 @@ const runTransformation = async (context, valueFromSource, transformation) => {
       arrangedTransformedValue = {};
       arrangedTransformedValue[transformation.findByValue] = transformedValue;
       transformedValue = arrangedTransformedValue;
+
+      break;
+
+    case "custom_query_function":
+      const outsideQueryFunctions = requireIfExists(locoConfig.queriesPath);
+
+      if (outsideQueryFunctions[transformation.function] !== undefined) {
+        transformedValue = await outsideQueryFunctions[transformation.function](
+          locoConfig.operator.knex,
+          valueFromSource,
+          transformation
+        );
+
+        arrangedTransformedValue = {};
+        arrangedTransformedValue[transformation.findByValue] = transformedValue;
+        transformedValue = arrangedTransformedValue;
+      }
 
       break;
 
