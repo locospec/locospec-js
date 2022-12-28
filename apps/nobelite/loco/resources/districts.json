@@ -163,8 +163,7 @@
         {
           "operation": "custom_query_function",
           "function": "filterProfileByUserSubType",
-          "findByValue": "state",
-          "extract": "uuid"
+          "findByValue": "state"
         }
       ]
     }
