@@ -253,7 +253,9 @@ const dbOps = async (dbOps) => {
             let totalResult = await totalBuilder.count({ count: "*" }).first();
             let total = parseInt(totalResult.count);
 
-            console.log("queryPrinter", queryPrinter.toString());
+            if (process.env.PRINT_QUERY === "true") {
+              console.log("queryPrinter", queryPrinter.toString());
+            }
 
             builtResult = {
               data: dataResult,
