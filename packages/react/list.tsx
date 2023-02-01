@@ -112,7 +112,7 @@ const List = ({
         };
 
         if (attribute.relation) {
-          column["identifier"] = resolveByDot("relation.resolveTo", attribute);
+          column["identifier"] = attribute.identifier;
 
           column["resolver"] = (d: any) => {
             return (
@@ -127,6 +127,13 @@ const List = ({
               </div>
             );
           };
+
+          if (resolveByDot("ui.list.filterBy", attribute) === "like") {
+            column["filterable"] = {
+              type: "text",
+            };
+          }
+
           return column;
         }
         if (attribute.mutateFrom) {
@@ -306,11 +313,19 @@ const List = ({
             let filterBy: any = filtersFromQuery;
 
             Object.keys(params.filters).forEach((element) => {
-              filterBy.push({
-                attribute: element,
-                op: "like",
-                value: params.filters[element],
-              });
+              if (resourceSpec.filterBy && resourceSpec.filterBy[element]) {
+                filterBy.push({
+                  attribute: element,
+                  operation: resourceSpec.filterBy[element].operation,
+                  value: params.filters[element],
+                });
+              } else {
+                filterBy.push({
+                  attribute: element,
+                  op: "like",
+                  value: params.filters[element],
+                });
+              }
             });
 
             payload["filterBy"] = filterBy;
