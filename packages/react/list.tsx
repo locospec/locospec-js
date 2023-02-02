@@ -17,6 +17,7 @@ import {
   PencilIcon,
   CheckIcon,
 } from "@heroicons/react/solid";
+import getIdentifier from "./helpers/getIdentifier";
 
 const Content = () => {
   return (
@@ -112,7 +113,7 @@ const List = ({
         };
 
         if (attribute.relation) {
-          column["identifier"] = attribute.identifier;
+          column["identifier"] = resolveByDot("relation.resolveTo", attribute);
 
           column["resolver"] = (d: any) => {
             return (
@@ -313,10 +314,11 @@ const List = ({
             let filterBy: any = filtersFromQuery;
 
             Object.keys(params.filters).forEach((element) => {
-              if (resourceSpec.filterBy && resourceSpec.filterBy[element]) {
+              const identifier = getIdentifier(resourceSpec, element);
+              if (resourceSpec.filterBy && resourceSpec.filterBy[identifier]) {
                 filterBy.push({
-                  attribute: element,
-                  operation: resourceSpec.filterBy[element].operation,
+                  attribute: identifier,
+                  operation: resourceSpec.filterBy[identifier].operation,
                   value: params.filters[element],
                 });
               } else {
