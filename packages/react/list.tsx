@@ -17,6 +17,7 @@ import {
   PencilIcon,
   CheckIcon,
 } from "@heroicons/react/solid";
+import getIdentifier from "./helpers/getIdentifier";
 
 const Content = () => {
   return (
@@ -127,6 +128,13 @@ const List = ({
               </div>
             );
           };
+
+          if (resolveByDot("ui.list.filterBy", attribute) === "like") {
+            column["filterable"] = {
+              type: "text",
+            };
+          }
+
           return column;
         }
         if (attribute.mutateFrom) {
@@ -306,11 +314,20 @@ const List = ({
             let filterBy: any = filtersFromQuery;
 
             Object.keys(params.filters).forEach((element) => {
-              filterBy.push({
-                attribute: element,
-                op: "like",
-                value: params.filters[element],
-              });
+              const identifier = getIdentifier(resourceSpec, element);
+              if (resourceSpec.filterBy && resourceSpec.filterBy[identifier]) {
+                filterBy.push({
+                  attribute: identifier,
+                  operation: resourceSpec.filterBy[identifier].operation,
+                  value: params.filters[element],
+                });
+              } else {
+                filterBy.push({
+                  attribute: element,
+                  op: "like",
+                  value: params.filters[element],
+                });
+              }
             });
 
             payload["filterBy"] = filterBy;
