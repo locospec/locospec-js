@@ -81,53 +81,57 @@ const PickerSelectSimpleControl = (props: any) => {
       defaultSelected={value}
       dataSource={async (query: any) => {
         // console.log("query", query === "");
+        if (props.uischema.staticData) {
+          return props.uischema.staticData;
+        } else {
+          let filterBy: any = [];
 
-        let filterBy: any = [];
-
-        if (query !== undefined) {
-          filterBy.push({
-            attribute: "name",
-            op: "LIKE",
-            value: query,
-          });
-        }
-
-        if (
-          locoSpec.dependsOn !== undefined &&
-          Object.keys(ctx?.core?.data[locoSpec.dependsOn.attribute]).length > 0
-        ) {
-          filterBy.push({
-            attribute: locoSpec.dependsOn.filterBy,
-            op: "eq",
-            value: ctx?.core?.data[locoSpec.dependsOn.attribute]["value"],
-          });
-        }
-
-        // if (props.path === "district" && ctx?.core?.data?.state.length > 0) {
-        //   filterBy.push({
-        //     attribute: "state",
-        //     value: [ctx?.core?.data?.state[0]["slug"]],
-        //   });
-        // }
-
-        // console.log("dataSource", filterBy);
-        let response: any = await callLoco(
-          locoSpec.prefix,
-          locoSpec.resource,
-          `_read`,
-          {
-            filterBy: filterBy,
+          if (query !== undefined) {
+            filterBy.push({
+              attribute: props.uischema.nameKey,
+              op: "LIKE",
+              value: query,
+            });
           }
-        );
-        // // console.log("Search", query, response);
-        return response?.data.map((d: any) => {
-          return {
-            value: d.uuid,
-            label: d.name,
-            slug: d.slug,
-          };
-        });
-        // return [];
+
+          if (
+            locoSpec.dependsOn !== undefined &&
+            Object.keys(ctx?.core?.data[locoSpec.dependsOn.attribute]).length >
+              0
+          ) {
+            filterBy.push({
+              attribute: locoSpec.dependsOn.filterBy,
+              op: "eq",
+              value: ctx?.core?.data[locoSpec.dependsOn.attribute]["value"],
+            });
+          }
+
+          // if (props.path === "district" && ctx?.core?.data?.state.length > 0) {
+          //   filterBy.push({
+          //     attribute: "state",
+          //     value: [ctx?.core?.data?.state[0]["slug"]],
+          //   });
+          // }
+
+          // console.log("dataSource", filterBy);
+          let response: any = await callLoco(
+            locoSpec.prefix,
+            locoSpec.resource,
+            `_read`,
+            {
+              filterBy: filterBy,
+            }
+          );
+          // // console.log("Search", query, response);
+          return response?.data.map((d: any) => {
+            return {
+              value: d.uuid,
+              label: d[props.uischema.nameKey],
+              slug: d.slug,
+            };
+          });
+          // return [];
+        }
       }}
       labelBaseProps={{ label: props.label }}
       error={props.errors ? <ErrorText errors={[props.errors]} /> : null}
