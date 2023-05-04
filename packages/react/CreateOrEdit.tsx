@@ -363,10 +363,18 @@ function CreateOrEditForm({
                 reusejs: uiComponent,
                 loco: {
                   dependsOn: dependsOn,
-                  resource: attribute.relation.resource,
+                  resource: attribute.relation?.resource
+                    ? attribute.relation.resource
+                    : null,
                   prefix: routePrefix,
                 },
               },
+              nameKey: attribute.ui.create?.nameKey
+                ? attribute.ui.create.nameKey
+                : "name",
+              staticData: attribute.ui.create?.staticData
+                ? attribute.ui.create.staticData
+                : null,
             });
 
             if (action === "update") {
@@ -388,14 +396,29 @@ function CreateOrEditForm({
 
                 localFormData[attribute.resolved_identifier] = response;
               } else {
-                let response: any = await getByUuid(
-                  routePrefix,
-                  attribute.relation.resource,
-                  resourceData[attribute.resolved_identifier]
-                );
-                response["label"] = response["name"];
-                response["value"] = response["uuid"];
+                let response: any = {};
+                if (attribute.ui.create?.staticData) {
+                  let data = attribute.ui.create?.staticData;
+                  let filteredData = data.filter(
+                    (item: any) =>
+                      item.value === resourceData[attribute.resolved_identifier]
+                  );
+                  response = filteredData[0];
+                } else {
+                  response = await getByUuid(
+                    routePrefix,
+                    attribute.relation.resource,
+                    resourceData[attribute.resolved_identifier]
+                  );
 
+                  response["label"] =
+                    response[
+                      attribute.ui.create?.nameKey
+                        ? attribute.ui.create.nameKey
+                        : "name"
+                    ];
+                  response["value"] = response["uuid"];
+                }
                 localFormData[attribute.resolved_identifier] = response;
               }
             } else {
