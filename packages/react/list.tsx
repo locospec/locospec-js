@@ -43,10 +43,12 @@ const List = ({
   resourceSpec,
   router,
   routePrefix,
+  customCallback
 }: {
   resourceSpec: any;
   router: any;
   routePrefix: any;
+  customCallback?: any;
 }) => {
   const callOnRowClick = async (item: any) => {
     router.push(`/${resourceSpec.name}/${item.uuid}`);
@@ -54,6 +56,7 @@ const List = ({
   const [ready, setReady] = useState(false);
   const tableRef = useRef<any>(null);
 
+  const [headerButtons, setHeaderButtons] = useState<any>([]);
   const [filtersFromQuery, setFiltersFromQuery] = useState<any>([]);
 
   const [config, setConfig] = useState<any>({
@@ -103,6 +106,9 @@ const List = ({
   };
 
   useEffect(() => {
+    if (resolveByDot("ui.list.header.buttons", resourceSpec) !== undefined) {
+      setHeaderButtons(resolveByDot("ui.list.header.buttons", resourceSpec));
+    }
     const columns = resourceSpec?.attributes
       ?.filter((attribute: any) => {
         return resolveByDot("ui.list.display", attribute) === true;
@@ -267,7 +273,20 @@ const List = ({
     });
 
     return (
-      <>
+
+       <div className="flex space-x-2">
+       {headerButtons.length > 0 &&
+          headerButtons.map((button: any, index: any) => {
+            return (
+              <ButtonBase
+                key={`header-link-${index}`}
+                type="button"
+                label={button.label}
+                onClick={() => customCallback()}
+              />
+            );
+          })}
+
         <ButtonBase
           type="button"
           label="Create"
@@ -279,7 +298,7 @@ const List = ({
             );
           }}
         />
-      </>
+      </div>
     );
   };
 

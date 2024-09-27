@@ -9,7 +9,7 @@ import Link from "next/link";
 import { callLoco, getByUuid } from "./helpers/callLoco";
 import resolveByDot from "./helpers/resolveByDot";
 
-const LocoSpecUI = (router: any, prefix: any) => {
+const LocoSpecUI = (router: any, prefix: any, customCallback?:any) => {
   const resource = router.query.resource;
 
   const [routePrefix, setRoutePrefix] = useState(prefix);
@@ -120,6 +120,7 @@ const LocoSpecUI = (router: any, prefix: any) => {
                 resourceSpec={resourceSpec}
                 router={router}
                 routePrefix={routePrefix}
+                customCallback={customCallback}
               />
             </>
           )}
