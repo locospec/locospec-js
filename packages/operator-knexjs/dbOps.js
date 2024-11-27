@@ -15,6 +15,10 @@ const addFilters = (knex, dataBuilder, filters) => {
       case "gte":
         dataBuilder = dataBuilder.where(filter.column, ">=", `${filter.value}`);
         break;
+      
+      case "lte":
+        dataBuilder = dataBuilder.where(filter.column, "<=", `${filter.value}`);
+        break;
 
       case "in":
         // console.log("in col", filter.value);
