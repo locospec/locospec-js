@@ -1001,7 +1001,7 @@
     validate.js "^0.13.1"
 
 "@locospec/operator-knexjs@*", "@locospec/operator-knexjs@file:/Users/rajiv/Projects/Locospec/locospec-js/packages/operator-knexjs":
-  version "0.0.15"
+  version "0.0.16"
   resolved "file:packages/operator-knexjs"
   dependencies:
     knex "^2.3.0"
