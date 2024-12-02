@@ -1008,7 +1008,7 @@
     pg "^8.8.0"
 
 "@locospec/react@*", "@locospec/react@file:/Users/rajiv/Projects/Locospec/locospec-js/packages/react":
-  version "0.0.31"
+  version "0.0.32"
   resolved "file:packages/react"
   dependencies:
     "@emotion/react" "^11.10.4"
