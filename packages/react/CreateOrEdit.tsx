@@ -405,19 +405,21 @@ function CreateOrEditForm({
                   );
                   response = filteredData[0];
                 } else {
-                  response = await getByUuid(
-                    routePrefix,
-                    attribute.relation.resource,
-                    resourceData[attribute.resolved_identifier]
-                  );
+                  if(resourceData[attribute.resolved_identifier]){
+                    response = await getByUuid(
+                      routePrefix,
+                      attribute.relation.resource,
+                      resourceData[attribute.resolved_identifier]
+                    );
 
-                  response["label"] =
-                    response[
-                      attribute.ui.create?.nameKey
-                        ? attribute.ui.create.nameKey
-                        : "name"
-                    ];
-                  response["value"] = response["uuid"];
+                    response["label"] =
+                      response[
+                        attribute.ui.create?.nameKey
+                          ? attribute.ui.create.nameKey
+                          : "name"
+                      ];
+                    response["value"] = response["uuid"];
+                  }
                 }
                 localFormData[attribute.resolved_identifier] = response;
               }
