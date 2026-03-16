@@ -8,5 +8,12 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     application_name: process.env.APP_NAME || "loco-knexjs-operator",
+    ...(process.env.DB_SSL_MODE === "true"
+      ? {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
+      : {}),
   },
 };
