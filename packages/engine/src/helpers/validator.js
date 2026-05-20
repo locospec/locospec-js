@@ -1,4 +1,4 @@
-var validate = require("validate.js");
+var validate = require("../validate.js");
 const runOperations = require("./runOperations");
 
 validate.validators.outside_function = function (
